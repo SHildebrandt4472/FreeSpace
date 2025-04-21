@@ -31,3 +31,4 @@ def init_app(app):
 
 from . import main_routes
 from . import login_routes
+from . import workspace_routes

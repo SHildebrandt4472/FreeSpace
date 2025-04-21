@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h2>Workspace - {{workspace.name}}</h2>
+
+  <b>Name: </b> {{workspace.name}}<br>
+  <b>Description: </b> {{workspace.description}}<br>
+  <b>Location: </b> {{workspace.location}}<br>
+  <b>Status: </b> {{workspace.status_str()}}<br>
+  <b>Slots: </b> {%for slot in workspace.slots%}
+                 {{slot.start_time}}<br>
+                 {%endfor%}
+
+{% endblock %}
+
+

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h2>Work Spaces</h2>
+
+  {% for space in spaces %}
+  <a href="{{ url_for('.show_workspace',id = space.id)}}">{{space.name}} - {{space.description}}</a><br>
+  {% endfor %}
+
+{% endblock %}
+
+
