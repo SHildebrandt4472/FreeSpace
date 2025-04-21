@@ -12,9 +12,9 @@
 #
 #
 #import click
-from app.models import db, User
+from app.models import db, User, WorkSpace, Slot
 from app.cli import bp
-#import datetime
+import datetime
 
 @bp.cli.command("init_data")
 def init_data():  # Preset data for testing and initial deployment 
@@ -39,7 +39,33 @@ def init_data():  # Preset data for testing and initial deployment
   print("Created:", user)    
 
   
+  WorkSpace.query.delete()
 
+  laser_cutter = WorkSpace(name="Laser cutter 1", 
+                          description="The good one",
+                          location="Machiene room 1")
+  db.session.add(laser_cutter)
+  db.session.commit()
+  print("Created:", laser_cutter)
+
+  printer = WorkSpace(name="3d printer 1", 
+                          description="The not so good one",
+                          location="Machiene room 1")
+  db.session.add(printer)
+  db.session.commit()
+  print("Created:", printer)
+    
   
-  
-  
+  Slot.query.delete()
+
+  for i in range(10):
+    
+    today = datetime.date.today()
+    MyTime = datetime.time(8, 0, 0)
+    DateTime = datetime.datetime.combine(today, MyTime)  
+    slot = Slot(workspace_id=laser_cutter.id,
+                start_time=DateTime + datetime.timedelta(minutes=i*30),
+                description=f"Slot {i}")
+    db.session.add(slot)
+    db.session.commit()
+    print("Created:", slot)
