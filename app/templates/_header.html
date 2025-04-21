@@ -1,0 +1,20 @@
+
+<div id="header"> 
+
+  <div id="userinfo">
+    {% if current_user.is_authenticated %}      
+      <div id="user">Welcome {{current_user.display_name }}</div>
+    {% endif %}
+  </div>
+
+  <span class="title">FreeSpace</span>
+</div>
+
+<div id="menubar">
+  <ul>
+    {% if not current_user.is_anonymous %}    
+      <li><a href="{{ url_for('.home') }}">Home</a></li>      
+      <li class="right"><a href="{{ url_for('main.logout') }}">Logout</a></li>
+    {% endif %}
+  </ul>
+</div>

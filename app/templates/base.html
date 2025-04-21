@@ -1,0 +1,30 @@
+ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <title>      
+      {% if title %}
+	-     {{title}}
+      {% else %}
+        Task Master
+      {%endif%}
+    </title>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    
+    {% block head %}{% endblock %}
+  </head>
+  
+  <body>
+    {% include '_header.html' %}
+    
+    <div id="page">
+      {% block page_flash %}
+        {% include '_flash_messages.html' %}
+      {% endblock %}
+      
+      {% block content %}{% endblock %}
+    </div>
+   </body>
+</html>

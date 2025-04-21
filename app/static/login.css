@@ -1,0 +1,108 @@
+form.login input[type=text],
+form.login input[type=password] {
+  font-size: 16px;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 2px 0;
+  box-sizing: border-box;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  transition: 0.5s;
+}
+
+form.login input[type=text]:focus,
+form.login input[type=password]:focus {
+  border: 2px solid #555;
+}
+
+form.login input[type=submit] {
+  color: white;  
+  background-color: rgb(7, 17, 127);
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.2s;
+  cursor: pointer;
+}
+
+form.login input[type=submit]:hover {
+  background-color: #34a;
+}
+
+form.login select {
+	display: block;
+	font-size: 16px;
+	font-family: sans-serif;
+	color: #444;
+	line-height: 1.3;
+	padding: .6em 1.4em .5em .8em;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	border: 1px solid #aaa;
+	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+	border-radius: .5em;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;	
+	background-repeat: no-repeat, repeat;
+	background-position: right .7em top 50%, 0 0;
+	background-size: .65em auto, 100%;
+}
+form.login select::-ms-expand {
+	display: none;
+}
+form.login select:hover {
+	border-color: #888;
+}
+form.login select:focus {
+  border: 2px solid #555;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222;
+	outline: none;
+}
+form.login select option {
+	font-weight:normal;
+}
+
+.loginpage {
+  background: #888;
+  background: var(--menu-back);
+}
+
+#loginform,
+#registrationform {
+  display: block;
+  width:300px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px #888;
+  background-color: #eee;
+  color: rgb(7, 17, 127);
+}
+
+#registrationform {
+  width:400px;
+}
+
+#loginform h1,
+#registrationform h1 {
+  text-align: center;
+  color: #008;
+}
+
+#loginform a,
+#registrationform a {
+  text-decoration: none;
+}
