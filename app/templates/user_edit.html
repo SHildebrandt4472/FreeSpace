@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <form class="settings" action="" method="post">
+        {{ form.hidden_tag() }}
+          <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+
+          <p>
+            {{ form.display_name.label }}<br>
+            {{ form.display_name(size=32) }}<br>
+            {% for error in form.display_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+
+          <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=64) }}<br>
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+
+	  {% if not form.user == current_user %}
+            <p>
+              {{ form.access.label }}<br>
+              {{ form.access() }}<br>
+              {% for error in form.access.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+	  {% endif %}
+
+          <p>{{ form.submit() }}</p>
+    </form>
+
+
+
+{% endblock %}
+
