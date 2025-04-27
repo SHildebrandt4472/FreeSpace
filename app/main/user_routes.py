@@ -43,7 +43,7 @@ def edit_user(id):
         #if reset_password:
         #  user.password_hash = ''
 
-        if not user.id:               # NEW User
+        if not user.id:               
           db.session.add(user)
         db.session.commit()
         flash('Your changes have been saved.')

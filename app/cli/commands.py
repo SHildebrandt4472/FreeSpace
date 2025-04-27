@@ -24,7 +24,8 @@ def init_data():  # Preset data for testing and initial deployment
   
   user = User(username="sam",  # Creating a new user with differents attributes
               email="sam@fullsteam.net",
-              display_name="Sam")              
+              display_name="Sam",
+              access=40)              
   user.set_password("train")
   db.session.add(user)  
   db.session.commit()

@@ -31,3 +31,9 @@ class WorkSpace(db.Model):
     if self.status in WorkSpace.STS_STRINGS:
       return WorkSpace.STS_STRINGS[self.status]
     return "Unknown"
+
+  def status_choices():
+    choices=[]
+    for status in WorkSpace.STS_STRINGS:
+      choices.append((status,WorkSpace.STS_STRINGS[status]))
+    return choices
