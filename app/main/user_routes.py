@@ -57,3 +57,20 @@ def edit_user(id):
         form.email.data = user.email
         form.access.data = user.access
     return render_template('user_edit.html', title=title, form=form)
+
+@bp.route('/user/<id>') 
+@login_required
+def show_user(id):
+   user = User.query.get_or_404(id)
+   return render_template('show_user.html',user = user)
+
+@bp.route('/user/<id>/delete', methods=['POST'])
+@login_required
+def delete_user(id):
+   if not current_user.is_admin():
+      abort(403)
+
+   user = User.query.get_or_404(id)
+   db.session.delete(user)
+   db.session.commit()
+   return redirect(url_for('.users'))

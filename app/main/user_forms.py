@@ -10,7 +10,7 @@ class UserEditForm(FlaskForm):
     display_name = StringField('Full Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
     access = SelectField('Access Level', choices=[(10, 'Student'), (20, 'Staff'), (30, 'Manager'), (40, 'Admin')],coerce=int, validators=[DataRequired()])
-    submit = SubmitField('Register')
+    submit = SubmitField('Update')
 
     #Validation of forms
 

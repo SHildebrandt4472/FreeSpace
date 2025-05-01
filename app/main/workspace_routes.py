@@ -19,10 +19,18 @@ def workspaces():  # Main home page:
 @bp.route('/workspace/<id>') 
 @login_required
 def show_workspace(id):
-   workspace = WorkSpace.query.filter_by(id=id).first()
-   if not workspace:
-      abort(403)
-   return render_template('show_workspace.html',workspace = workspace)
+   workspace = WorkSpace.query.get_or_404(id)
+
+   daily_slots = []
+   for i in range(7):
+      slots = []
+      daily_slots.append(slots)
+
+   for slot in workspace.slots:
+         dow = slot.start_time.weekday()
+         daily_slots[dow].append(slot)
+
+   return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots)
 
 @bp.route('/workspace/new', defaults={'id':None})
 @bp.route('/workspace/<id>/edit')

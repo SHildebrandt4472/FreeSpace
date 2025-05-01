@@ -14,6 +14,7 @@ bp = Blueprint('main', __name__)
 def init_app(app):
     app.register_blueprint(bp)
     app.register_error_handler(403, error_forbidden)
+    app.register_error_handler(404, error_forbidden) 
     app.jinja_options['finalize'] = lambda x: x if x is not None else '' #prevent Jinja from printing None
 
     login.login_view = 'main.login'

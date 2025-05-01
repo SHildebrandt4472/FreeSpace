@@ -1,0 +1,23 @@
+
+<table class="slot_table">
+    <tr>
+        <th></th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+    </tr>
+    <tr>
+        <td>Times</td>
+        {% for day in daily_slots %}
+            <td>
+            {% for slot in day%}
+                <div class = "slot">{{slot.start_time}}</div>
+            {%endfor%}
+            </td>
+        {%endfor%}
+    </tr>
+</table>>
