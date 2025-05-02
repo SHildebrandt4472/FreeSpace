@@ -1,17 +1,138 @@
-.slot_table{
-    border: 1px solid black;
-    background-color: grey;
-}
+.slot_table {
+    /* Define some Variables */
+    --px_per_min: 1.5px;                     
+    --col_width: 120px;                
+    --time_col_width: 40px;                 
+    border-spacing: 2px 2px;   
+    border: 2px solid #00a;                     
+}            
 
-.slot_table td{
-    text-align: left;
+.slot_table td {                
     vertical-align: top;
-    border: 1px solid black;
-    padding: 5px;
+    padding: 0px;               
+    height: calc(360 * var(--px_per_min));
+}            
+
+.time_col {
+    position: relative;
+    width: var(--time_col_width); 
 }
 
-.slot{
-    border: 1px solid white;
-    padding: 5px;
-    background-color:dimgrayw
+.time_col div {
+    border: 1px solid #eee;
+    width: var(--time_col_width); 
+    height: calc(30 * var(--px_per_min) - 1px);
+    box-sizing: border-box;                               
+}
+
+.col {
+    position: relative;
+    width: var(--col_width); 
+    /*padding-left: 5px;                           
+    padding-right: 5px; */                          
+}               
+
+.slot {                
+    min-width: var(--col_width);  
+    padding: 0px 5px;                     
+    box-sizing: border-box;
+    overflow: hidden;                               
+}  
+
+.available {
+    background-color: rgb(24, 50, 24);
+    border: 1px solid rgb(0, 100, 0);    
+}
+
+.not_available {
+    background-color: rgb(85, 0, 0);
+    border: 1px solid rgb(128, 0, 0);                
+}
+
+.empty_slot {                
+    min-width: var(--col_width);                  
+    border: 1px solid #eee;                
+    box-sizing: border-box;               
+    height: calc(30 * var(--px_per_min) - 1px);
+}          
+
+a.empty_slot:hover {
+    background: #ddd;
+}
+
+.time_07-00 {                
+    position: absolute;                 
+    top: calc(0 * var(--px_per_min));                
+}
+
+.time_07-30 {                
+    position: absolute;                 
+    top: calc(30 * var(--px_per_min));                
+}
+
+.time_08-00 {                
+    position: absolute;                 
+    top: calc(60 * var(--px_per_min));                
+}
+
+.time_08-30 {                
+    position: absolute;                 
+    top: calc(90 * var(--px_per_min));                
+}
+
+.time_09-00 {                
+    position: absolute;                 
+    top: calc(120 * var(--px_per_min));                
+}
+
+.time_09-30 {                
+    position: absolute;                 
+    top: calc(150 * var(--px_per_min));                
+}
+
+.time_10-00 {                
+    position: absolute;                 
+    top: calc(180 * var(--px_per_min));                
+}
+
+.time_10-30 {                
+    position: absolute;                 
+    top: calc(210 * var(--px_per_min));                
+}
+
+.time_11-00 {                
+    position: absolute;                 
+    top: calc(240 * var(--px_per_min));               
+}
+
+.time_11-30 {                
+    position: absolute;                 
+    top: calc(270 * var(--px_per_min));               
+}           
+
+.time_12-00 {                
+    position: absolute;                 
+    top: calc(300 * var(--px_per_min));                
+}
+
+.time_12-30 {                
+    position: absolute;                 
+    top: calc(330 * var(--px_per_min));                
+}
+
+.dur_15 {
+    height: calc(15 * var(--px_per_min) - 1px);
+}
+.dur_30 {
+    height: calc(30 * var(--px_per_min) - 1px);                
+}
+.dur_45 {
+    height: calc(45 * var(--px_per_min) - 1px);
+}
+.dur_60 {
+    height: calc(60 * var(--px_per_min) - 1px);
+}            
+
+.status_str{
+    font-weight: bold;
 }

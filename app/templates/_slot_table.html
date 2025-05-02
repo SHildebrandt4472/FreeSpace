@@ -11,13 +11,40 @@
         <th>Sunday</th>
     </tr>
     <tr>
-        <td>Times</td>
+        <td class="time_col">
+            <div class="time_07-00">7:00</div>
+            <div class="time_07-30">7:30</div>
+            <div class="time_08-00">8:00</div>
+            <div class="time_08-30">8:30</div>
+            <div class="time_09-00">9:00</div>
+            <div class="time_09-30">9:30</div>
+            <div class="time_10-00">10:00</div>
+            <div class="time_10-30">10:30</div>
+            <div class="time_11-00">11:00</div>
+            <div class="time_11-30">11:30</div>
+            <div class="time_12-00">12:00</div>
+            <div class="time_12-30">12:30</div>                    
+        </td>
+
         {% for day in daily_slots %}
-            <td>
-            {% for slot in day%}
-                <div class = "slot">{{slot.start_time}}</div>
-            {%endfor%}
+            <td class="col">
+                <a class="empty_slot time_07-00"  href='#'></a>
+                <a class="empty_slot time_07-30"  href='#'></a>
+                <a class="empty_slot time_08-00"  href='#'></a>
+                <a class="empty_slot time_08-30"  href='#'></a>
+                <a class="empty_slot time_09-00"  href='#'></a>
+                <a class="empty_slot time_09-30"  href='#'></a>
+                <a class="empty_slot time_10-00" href='#'></a>
+                <a class="empty_slot time_10-30" href='#'></a>
+                <a class="empty_slot time_11-00" href='#'></a>
+                <a class="empty_slot time_11-30" href='#'></a>
+                <a class="empty_slot time_12-00" href='#'></a>
+                <a class="empty_slot time_12-30" href='#'></a>
+
+                {% for slot in day%}
+                    <div class = "{{h.class_for_slot(slot)}}">{%include "_slot.html"%}</div>
+                {%endfor%}
             </td>
         {%endfor%}
     </tr>
-</table>>
+</table>

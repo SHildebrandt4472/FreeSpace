@@ -53,4 +53,12 @@ def fmt_date_daysuntil(date):
   
   return f"{days} {days_str}"
 
-
+def class_for_slot(slot):
+  cls = "slot"
+  cls += " time_" + slot.start_time.strftime("%H-%M")
+  cls += f" dur_{slot.duration}"
+  if slot.user_id:
+    cls += " not_available"
+  else:
+    cls += " available"
+  return cls

@@ -27,3 +27,8 @@ class Slot(db.Model):
     if self.user_id:
       return "Booked"
     return "Available"
+  
+  def is_booked(self):
+    if self.user_id:
+      return True
+    return False
