@@ -1,0 +1,6 @@
+<span class="status_str">{{ slot.status_str() }}</span>
+{% if slot.is_booked() %}
+    : {{slot.user.display_name}}
+{% endif %}
+<br>
+{{ slot.start_time.strftime("%H:%M")}} {{ slot.duration }} mins

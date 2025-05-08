@@ -6,6 +6,8 @@ from datetime import datetime
 
 class Slot(db.Model):
 
+  duration_choices = [5 * x for x in range(3, 25)]  # create list of numbers from 15 mins to 240(3 hours) going up by 5
+
   id = db.Column(db.Integer, primary_key=True)
   workspace_id = db.Column(db.Integer, db.ForeignKey('work_space.id'))
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -27,3 +29,8 @@ class Slot(db.Model):
     if self.user_id:
       return "Booked"
     return "Available"
+  
+  def is_booked(self):
+    if self.user_id:
+      return True
+    return False

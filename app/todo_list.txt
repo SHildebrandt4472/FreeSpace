@@ -1,0 +1,2 @@
+Possible improvments:
+- log number of 404 request and if more than 10, lock out and send message

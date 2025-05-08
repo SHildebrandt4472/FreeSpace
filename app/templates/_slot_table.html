@@ -1,0 +1,36 @@
+
+<table class="slot_table">
+    <tr>
+        <th></th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+    </tr>
+    <tr>
+        <td class="time_col">
+            {% for hour in range(7,20) %}
+                <div class="time_{{'%02d'%hour}}-00">{{hour}}:00</div>
+                <div class="time_{{'%02d'%hour}}-30">{{hour}}:30</div>
+                {% endfor %}
+            
+                                
+        </td>
+
+        {% for day in daily_slots %}
+            <td class="col">
+                {% for hour in range(7,20) %}
+                    <a class="empty_slot time_{{'%02d' % hour}}-00"  href='#'></a>
+                    <a class="empty_slot time_{{'%02d' % hour}}-30"  href='#'></a>
+                {% endfor %}
+
+                {% for slot in day%}
+                    <div class = "{{h.class_for_slot(slot)}}">{%include "_slot.html"%}</div>
+                {%endfor%}
+            </td>
+        {%endfor%}
+    </tr>
+</table>

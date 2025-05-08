@@ -70,3 +70,10 @@ def init_data():  # Preset data for testing and initial deployment
     db.session.add(slot)
     db.session.commit()
     print("Created:", slot)
+@bp.cli.command("make_css")
+def make_css():
+  min = 0
+  for h in range(7,20): 
+    for m in range(0,60,5):
+      print(f".time_{h:02}-{m:02} {{ top: calc({min} * var(--px_per_min)); }}")
+      min+= 5

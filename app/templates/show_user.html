@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h2>User - {{user.display_name}}</h2>
+
+  <b>Name: </b> {{user.display_name}}<br>
+  <b>Username: </b> {{user.username}}<br>
+  <b>Email: </b> {{user.email}}<br>
+  <b>Access: </b> {{user.access_str()}}<br>
+  <b>Last seen: </b> {{user.last_seen}}<br>
+
+  <a href="{{url_for('.edit_user',id=user.id)}}">Edit user</a>
+
+  <form action="{{ url_for('.delete_user', id=user.id) }}" method="POST">
+    <input class="delete" type="submit" value="Delete" onclick="return confirm('Delete User {{user.display_name}}\nAre You Sure?')">
+  </form>
+{% endblock %}
+
+

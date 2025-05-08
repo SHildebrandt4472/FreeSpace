@@ -13,9 +13,9 @@
 <div id="menubar">
   <ul>
     {% if not current_user.is_anonymous %}    
-      <li><a href="{{ url_for('.home') }}">Home</a></li>      
-      <li><a href="{{ url_for('.workspaces') }}">Work Spaces</a></li>    
-      <li><a href="{{ url_for('.users') }}">Users</a></li> 
+      <li><a href="{{ url_for('main.home') }}">Home</a></li>      
+      <li><a href="{{ url_for('main.workspaces') }}">Work Spaces</a></li>    
+      <li><a href="{{ url_for('main.users') }}">Users</a></li> 
       <li class="right"><a href="{{ url_for('main.logout') }}">Logout</a></li>
     {% endif %}
   </ul>
