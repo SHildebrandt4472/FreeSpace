@@ -22,7 +22,7 @@ class WorkSpace(db.Model):
 
   created_at = db.Column(db.DateTime, default=db.func.datetime('now')) 
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
-  slots = db.relationship('Slot', backref='workspace', lazy=True)
+  slots = db.relationship('Slot', backref='workspace', lazy='dynamic')
 
   def __repr__(self):
     return f"<WorkSpace {self.id}: {self.name}>"

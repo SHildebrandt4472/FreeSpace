@@ -1,14 +1,19 @@
 
+{% if prev_url %}
+    <a class = "button" href="{{prev_url}}">&lt Previous</a>
+{%endif%}
+
+{% if next_url %}
+    <a class = "button" href="{{next_url}}">Next &gt</a>
+{%endif%}
+
 <table class="slot_table">
     <tr>
         <th></th>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
-        <th>Sunday</th>
+        {% for day in dates %}
+            <th>{{day.strftime("%a %d %b").replace("-0", "-")}}</th>
+        
+        {% endfor %}
     </tr>
     <tr>
         <td class="time_col">
@@ -28,7 +33,7 @@
                 {% endfor %}
 
                 {% for slot in day%}
-                    <div class = "{{h.class_for_slot(slot)}}">{%include "_slot.html"%}</div>
+                    {%include "_slot.html"%}
                 {%endfor%}
             </td>
         {%endfor%}

@@ -1,8 +1,10 @@
 .slot_table {
-    /* Define some Variables */
-    --px_per_min: 1.5px;                     
+    /* Define some Variables */    
+    --px_per_min: 1px;                     
     --col_width: 120px;                
-    --time_col_width: 40px;                 
+    --time_col_width: 40px;  
+    --grid_line_colour: #666;  
+    font-size: small;             
     border-spacing: 2px 2px;   
     border: 2px solid #00a;                     
 }            
@@ -19,7 +21,7 @@
 }
 
 .time_col div {
-    border: 1px solid #eee;
+    border: 1px solid var(--grid_line_colour);
     position: absolute;             
     width: var(--time_col_width); 
     height: calc(30 * var(--px_per_min) - 1px);
@@ -34,26 +36,37 @@
 }               
 
 .slot {                
+    display: block;
     min-width: var(--col_width);  
     padding: 0px 5px;                     
     box-sizing: border-box;
     overflow: hidden;    
-    position: absolute;                            
+    position: absolute;  
+    text-decoration: none;                                  
 }  
 
+
 .available {
-    background-color: rgb(24, 50, 24);
+    color: #dfd;    
+    background-color: rgb(10, 60, 10);
     border: 1px solid rgb(0, 100, 0);    
 }
+a.available:hover {
+    background-color: rgb(50, 100, 50);
+}    
 
 .not_available {
-    background-color: rgb(85, 0, 0);
-    border: 1px solid rgb(128, 0, 0);                
+    color: #fdd;
+    background-color: rgb(100, 10, 10);
+    border: 1px solid rgb(150, 50, 50);                
+}
+a.not_available:hover {
+    background-color: rgb(150, 50, 50);
 }
 
 .empty_slot {                
     min-width: var(--col_width);                  
-    border: 1px solid #eee;                
+    border: 1px solid var(--grid_line_colour);                
     box-sizing: border-box;               
     height: calc(30 * var(--px_per_min) - 1px);
     position: absolute;             
