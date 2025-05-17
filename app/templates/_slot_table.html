@@ -10,8 +10,8 @@
 <table class="slot_table">
     <tr>
         <th></th>
-        {% for day in dates %}
-            <th>{{day.strftime("%a %d %b").replace("-0", "-")}}</th>
+        {% for day in daily_slots %}
+            <th>{{day['date'].strftime("%a %d %b")}}</th>
         
         {% endfor %}
     </tr>
@@ -28,11 +28,11 @@
         {% for day in daily_slots %}
             <td class="col">
                 {% for hour in range(7,20) %}
-                    <a class="empty_slot time_{{'%02d' % hour}}-00"  href='#'></a>
-                    <a class="empty_slot time_{{'%02d' % hour}}-30"  href='#'></a>
+                    <a class="empty_slot time_{{'%02d' % hour}}-00"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,0)) }}"></a>
+                    <a class="empty_slot time_{{'%02d' % hour}}-30"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,30)) }}"></a>
                 {% endfor %}
 
-                {% for slot in day%}
+                {% for slot in day['slots'] %}
                     {%include "_slot.html"%}
                 {%endfor%}
             </td>

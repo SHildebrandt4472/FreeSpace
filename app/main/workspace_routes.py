@@ -27,22 +27,23 @@ def show_workspace(id,day):
       day = datetime.date.today()
    start_date = day - datetime.timedelta(days=day.weekday())  # calculate date of monday of current week
    end_date = start_date + datetime.timedelta(days=7)
-   dates = []
+   #dates = []
    
    daily_slots = []
    for i in range(7):
       slots = []
-      daily_slots.append(slots)
-      dates.append(start_date + datetime.timedelta(days=i))
+      daily_slots.append({'date'  : start_date + datetime.timedelta(days=i),
+                          'slots' : slots})
+      #dates.append(start_date + datetime.timedelta(days=i))
 
    for slot in workspace.slots.filter(Slot.start_time.between(start_date,end_date)):
          dow = slot.start_time.weekday()
-         daily_slots[dow].append(slot)
+         daily_slots[dow]['slots'].append(slot)
 
    next_url = url_for('.show_workspace',id=id, day=end_date)
    prev_url = url_for('.show_workspace',id=id, day=start_date-datetime.timedelta(days=1))
 
-   return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, dates=dates,  prev_url = prev_url, next_url = next_url)
+   return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url)
 
 @bp.route('/workspace/new', defaults={'id':None})
 @bp.route('/workspace/<id>/edit')

@@ -15,9 +15,9 @@ def show_slot(id):
    return render_template('show_slot.html',slot = slot)
 
 
-@bp.route('/workspace/<workspace_id>/new_slot')
+@bp.route('/workspace/<workspace_id>/new_slot/<datetime:start_time>')
 @login_required
-def new_slot(workspace_id):
+def new_slot(workspace_id, start_time):
    if not current_user.is_admin():
       abort(403)
    
@@ -25,7 +25,7 @@ def new_slot(workspace_id):
    workspace = WorkSpace.query.get_or_404(workspace_id)
    
    slot = Slot()
-   slot.start_time = datetime.datetime.now()   
+   slot.start_time = start_time  
 
    form = SlotEditForm()
    form.start_time.data = slot.start_time

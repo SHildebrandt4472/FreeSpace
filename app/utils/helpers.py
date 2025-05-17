@@ -67,3 +67,6 @@ def class_for_slot(slot):
   else:
     cls += " available"
   return cls
+
+def create_start_time(day,hour,min):
+  return datetime.datetime.combine(day, datetime.time(hour, min, 0))

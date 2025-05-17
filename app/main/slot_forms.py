@@ -9,7 +9,7 @@ class SlotEditForm(FlaskForm):
 
     #start_time = DateTimeField("Start time", validators=[DataRequired()])
     start_time = DateTimeLocalField('Start Time', validators=[DataRequired()])
-    duration = SelectField('Duration', choices=Slot.duration_choices, validators=[DataRequired()])
+    duration = SelectField('Duration', choices=Slot.duration_choices, coerce=int, validators=[DataRequired()])
     description = StringField('Description')
     repeating = BooleanField("Repeating")
     submit = SubmitField('Save')
