@@ -6,7 +6,11 @@ from app.models import db, Slot, WorkSpace
 from app.main import bp
 import datetime
 #from sqlalchemy import text
+<<<<<<< HEAD
+from .slot_forms import SlotEditForm, SlotBookingForm
+=======
 from .slot_forms import SlotEditForm
+>>>>>>> eb0827f242874b22139aa8d4d1c704437dc3b092
 
 @bp.route('/slot/<id>') 
 @login_required
@@ -59,6 +63,40 @@ def add_slot(workspace_id):
         return redirect(url_for('.show_workspace', id=workspace.id))
    return render_template('new_slot.html', title=title, form=form)
 
+<<<<<<< HEAD
+@bp.route('/slot/<id>/book',methods=['POST','GET'])
+@login_required
+def booking(id):
+   slot = Slot.query.get_or_404(id)  
+
+   if slot.is_booked() and slot.user_id != current_user.id:
+      abort(403) 
+
+   form = SlotBookingForm()
+   if request.method == 'GET':
+      form.description.data = slot.description  
+      return render_template('edit_booking.html', form=form, slot=slot)
+   elif request.method == 'POST' and form.validate_on_submit():
+      slot.user_id = current_user.id
+      slot.description = form.description.data
+      db.session.commit()
+      return redirect(url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
+   return render_template('edit_booking.html', form=form, slot=slot)
+
+@bp.route('/slot/<id>/unbook',methods=['POST'])
+@login_required
+def unbook(id):
+   slot = Slot.query.get_or_404(id)  
+
+   if slot.is_booked() and slot.user_id != current_user.id:
+      abort(403) 
+   
+   slot.user_id = None
+   db.session.commit()
+   return redirect(url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
+
+=======
+>>>>>>> eb0827f242874b22139aa8d4d1c704437dc3b092
 
 @bp.route('/slot/<id>/edit')
 @login_required

@@ -12,6 +12,9 @@ from .user_forms import UserEditForm
 @bp.route('/users')
 @login_required
 def users():  # Main home page:
+    if not current_user.is_admin():
+      abort(403)
+      
     users = User.query.all()
 
     return render_template('users.html',users = users)

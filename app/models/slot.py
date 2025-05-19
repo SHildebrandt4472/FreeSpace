@@ -34,3 +34,6 @@ class Slot(db.Model):
     if self.user_id:
       return True
     return False
+  
+  def is_avaliable(self):
+    return(not self.is_booked())

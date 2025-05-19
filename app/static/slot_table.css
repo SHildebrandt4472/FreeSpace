@@ -245,7 +245,24 @@ a.empty_slot:hover {
 .dur_50 { height: calc(50 * var(--px_per_min) - 1px); }
 .dur_55 { height: calc(55 * var(--px_per_min) - 1px); }
 .dur_60 { height: calc(60 * var(--px_per_min) - 1px); }
+<<<<<<< HEAD
+.dur_65 { height: calc(65 * var(--px_per_min) - 1px); }
+.dur_70 { height: calc(70 * var(--px_per_min) - 1px); }
+.dur_75 { height: calc(75 * var(--px_per_min) - 1px); }
+.dur_80 { height: calc(80 * var(--px_per_min) - 1px); }
+.dur_85 { height: calc(85 * var(--px_per_min) - 1px); }
+.dur_90 { height: calc(90 * var(--px_per_min) - 1px); }
+.dur_95 { height: calc(95 * var(--px_per_min) - 1px); }
+.dur_100 { height: calc(100 * var(--px_per_min) - 1px); }
+.dur_105 { height: calc(105 * var(--px_per_min) - 1px); }
+.dur_110 { height: calc(110 * var(--px_per_min) - 1px); }
+.dur_115 { height: calc(115 * var(--px_per_min) - 1px); }
+.dur_120 { height: calc(120 * var(--px_per_min) - 1px); }
 
+
+=======
+
+>>>>>>> eb0827f242874b22139aa8d4d1c704437dc3b092
 
 .status_str{
     font-weight: bold;

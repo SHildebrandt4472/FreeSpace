@@ -1,4 +1,15 @@
+<<<<<<< HEAD
+{% if current_user.is_admin() %}
+  <a class="{{h.class_for_slot(slot)}}" href="{{ url_for('.edit_slot', id=slot.id)}}">
+{% elif slot.is_avaliable() or slot.user_id == current_user.id %}
+  <a class="{{h.class_for_slot(slot)}}" href="{{ url_for('.booking', id=slot.id)}}">
+{% else %}
+  <a class="{{h.class_for_slot(slot)}}">
+{% endif %}
+
+=======
 <a class="{{h.class_for_slot(slot)}}" href="{{ url_for('.edit_slot', id=slot.id)}}">
+>>>>>>> eb0827f242874b22139aa8d4d1c704437dc3b092
 {% if slot.duration > 20 %}
   <span class="status_str">{{ slot.status_str() }}</span>
   {% if slot.is_booked() %}

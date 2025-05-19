@@ -14,3 +14,11 @@ class SlotEditForm(FlaskForm):
     repeating = BooleanField("Repeating")
     submit = SubmitField('Save')
 
+<<<<<<< HEAD
+class SlotBookingForm(FlaskForm):
+
+    #start_time = DateTimeField("Start time", validators=[DataRequired()])
+    description = StringField('Description')
+    submit = SubmitField('Book')
+=======
+>>>>>>> eb0827f242874b22139aa8d4d1c704437dc3b092
