@@ -6,11 +6,7 @@ from app.models import db, Slot, WorkSpace
 from app.main import bp
 import datetime
 #from sqlalchemy import text
-<<<<<<< HEAD
 from .slot_forms import SlotEditForm, SlotBookingForm
-=======
-from .slot_forms import SlotEditForm
->>>>>>> eb0827f242874b22139aa8d4d1c704437dc3b092
 
 @bp.route('/slot/<id>') 
 @login_required
@@ -63,7 +59,6 @@ def add_slot(workspace_id):
         return redirect(url_for('.show_workspace', id=workspace.id))
    return render_template('new_slot.html', title=title, form=form)
 
-<<<<<<< HEAD
 @bp.route('/slot/<id>/book',methods=['POST','GET'])
 @login_required
 def booking(id):
@@ -95,8 +90,6 @@ def unbook(id):
    db.session.commit()
    return redirect(url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
 
-=======
->>>>>>> eb0827f242874b22139aa8d4d1c704437dc3b092
 
 @bp.route('/slot/<id>/edit')
 @login_required
