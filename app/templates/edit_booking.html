@@ -20,7 +20,7 @@
             {% endfor %}
           </p>
 
-          <p>{{ form.submit() }}</p>
+          <p>{{ form.submit() }} {{ form.cancel() }}</p>
     </form>
 
     {% if slot.is_booked() %}

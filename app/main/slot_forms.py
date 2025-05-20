@@ -17,3 +17,4 @@ class SlotEditForm(FlaskForm):
 class SlotBookingForm(FlaskForm):    
     description = StringField('Description')
     submit = SubmitField('Book')
+    cancel = SubmitField('Cancel')

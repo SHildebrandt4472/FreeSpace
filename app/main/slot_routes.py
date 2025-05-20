@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, abort #,session
+from flask import render_template, flash, redirect, url_for, request, abort, session
 
 from flask_login import current_user, login_required #, login_user, logout_user #, login_required
 #from urllib.parse import urlparse
@@ -72,10 +72,11 @@ def booking(id):
       form.description.data = slot.description  
       return render_template('edit_booking.html', form=form, slot=slot)
    elif request.method == 'POST' and form.validate_on_submit():
-      slot.user_id = current_user.id
-      slot.description = form.description.data
-      db.session.commit()
-      return redirect(url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
+      if form.submit.data:
+         slot.user_id = current_user.id
+         slot.description = form.description.data
+         db.session.commit()      
+      return redirect(session['back_to'] or url_for('.home'))
    return render_template('edit_booking.html', form=form, slot=slot)
 
 @bp.route('/slot/<id>/unbook',methods=['POST'])

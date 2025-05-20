@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
   created_at = db.Column(db.DateTime, default=db.func.datetime('now')) 
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
 
-  slots = db.relationship('Slot', backref='user', lazy=True)
+  slots = db.relationship('Slot', backref='user', lazy='dynamic')
 
   def __repr__(self):
     return f"<User {self.id}: {self.username}>"

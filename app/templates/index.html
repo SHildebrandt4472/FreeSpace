@@ -2,7 +2,13 @@
 
 {% block content %}
 
-  <h2>Insert Stuff Here</h2>
+  <h2>My bookings</h2>
+  {% for booking in bookings %}
+    <div class="booking">
+      {{booking.workspace.name}} {{booking.start_time.date()}} {{booking.start_time.time()}} <a href="{{url_for('.booking', id=booking.id)}}">Edit</a>
+    </div>
+  {% endfor %}
+
 
 {% endblock %}
 
