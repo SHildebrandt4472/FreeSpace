@@ -1,8 +1,8 @@
 """added slots
 
-Revision ID: 0273c7fd14e5
+Revision ID: 81ab64141383
 Revises: 2300864b2c12
-Create Date: 2025-04-21 16:59:13.069633
+Create Date: 2025-05-27 19:55:39.353455
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0273c7fd14e5'
+revision = '81ab64141383'
 down_revision = '2300864b2c12'
 branch_labels = None
 depends_on = None
@@ -26,8 +26,11 @@ def upgrade():
     sa.Column('duration', sa.Integer(), nullable=True),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('repeating', sa.Integer(), nullable=True),
+    sa.Column('approved', sa.Integer(), nullable=True),
+    sa.Column('approved_by_id', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('last_modified', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['approved_by_id'], ['user.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.ForeignKeyConstraint(['workspace_id'], ['work_space.id'], ),
     sa.PrimaryKeyConstraint('id')

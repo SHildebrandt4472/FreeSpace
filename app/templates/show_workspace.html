@@ -5,23 +5,47 @@
 {% endblock %}
 
 {% block content %}
+  <div>
+    <h2>Workspace - {{workspace.name}}</h2>
+  </div>
 
-  <h2>Workspace - {{workspace.name}}</h2>
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-md-3 mb-4">
+      <div class="bg-dark p-3 rounded shadow-sm">
+        <h5 class="mb-3">{{workspace.name}}</h5>
+        <div class="row">
+          <div class="col-4">Name:</div>
+          <div class="col-8">{{workspace.name}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">Description:</div>
+          <div class="col-8">{{workspace.description}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">Location:</div>
+          <div class="col-8">{{workspace.location}}</div>
+        </div>
+        <div class="row">
+          <div class="col-4">Status:</div>
+          <div class="col-8">{{workspace.status}}</div>
+        </div>
+      </div>
+    </aside>
 
-  <b>Name: </b> {{workspace.name}}<br>
-  <b>Description: </b> {{workspace.description}}<br>
-  <b>Location: </b> {{workspace.location}}<br>
-  <b>Status: </b> {{workspace.status_str()}}<br>
-  <b>Slots: </b> 
-  {% with slots=workspace.slots%}
-      {% include "_slot_table.html"%}
-  {% endwith %}
+    <div class="col-md-9">
 
-  <a href="{{url_for('.edit_workspace',id=workspace.id)}}">Edit workspace</a>
+      {% with slots=workspace.slots%}
+        {% include "_slot_table.html"%}
+      {% endwith %}
 
-  <form action="{{ url_for('.delete_workspace', id=workspace.id) }}" method="POST">
-    <input class="delete" type="submit" value="Delete" onclick="return confirm('Delete Workspace {{workspace.name}}\nAre You Sure?')">
-  </form>
+    <a href="{{url_for('.edit_workspace',id=workspace.id)}}">Edit workspace</a>
+
+    <form action="{{ url_for('.delete_workspace', id=workspace.id) }}" method="POST">
+      <input class="delete" type="submit" value="Delete" onclick="return confirm('Delete Workspace {{workspace.name}}\nAre You Sure?')">
+    </form>
+    </div>
+  </div>
 {% endblock %}
 
 

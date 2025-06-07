@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
   created_at = db.Column(db.DateTime, default=db.func.datetime('now')) 
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
 
-  slots = db.relationship('Slot', backref='user', lazy='dynamic')
+  slots = db.relationship('Slot', backref='user', lazy='dynamic', foreign_keys='Slot.user_id')
 
   def __repr__(self):
     return f"<User {self.id}: {self.username}>"
@@ -48,7 +48,13 @@ class User(UserMixin, db.Model):
     return check_password_hash(self.password_hash, password)
 
   def is_student(self):
-    return self.access >= ACCESS['student']
+    return self.access == ACCESS['student']
+  
+  def is_staff(self):
+    return self.access >= ACCESS['staff']
+  
+  def is_manager(self):
+    return self.access >= ACCESS['manager']
 
   def is_admin(self):
     return self.access >= ACCESS['admin']

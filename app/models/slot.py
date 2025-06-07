@@ -18,6 +18,9 @@ class Slot(db.Model):
   description = db.Column(db.Text)
   repeating = db.Column(db.Integer, default=1)  # 1 = repeat, 0 - not repeat
 
+  approved = db.Column(db.Integer, default=0)  # 1 = approved, 0 - not approved
+  approved_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
   created_at = db.Column(db.DateTime, default=db.func.datetime('now')) 
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 

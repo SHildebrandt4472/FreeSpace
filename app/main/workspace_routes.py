@@ -42,7 +42,7 @@ def show_workspace(id,day):
 
    next_url = url_for('.show_workspace',id=id, day=end_date)
    prev_url = url_for('.show_workspace',id=id, day=start_date-datetime.timedelta(days=1))
-   session['back_to'] = url_for('.show_workspace', id=id, date=slot.start_time.date())
+   session['back_to'] = url_for('.show_workspace', id=id, date=day)#slot.start_time.date())
    return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url)
 
 @bp.route('/workspace/new', defaults={'id':None})

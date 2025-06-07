@@ -28,8 +28,13 @@
         {% for day in daily_slots %}
             <td class="col">
                 {% for hour in range(7,20) %}
-                    <a class="empty_slot time_{{'%02d' % hour}}-00"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,0)) }}"></a>
-                    <a class="empty_slot time_{{'%02d' % hour}}-30"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,30)) }}"></a>
+                    {% if current_user.is_admin() %}
+                        <a class="empty_slot time_{{'%02d' % hour}}-00"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,0)) }}"></a>
+                        <a class="empty_slot time_{{'%02d' % hour}}-30"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,30)) }}"></a>
+                    {% else %}
+                    <div class="empty_slot time_{{'%02d' % hour}}-00"></div>
+                    <div class="empty_slot time_{{'%02d' % hour}}-30"></div>
+                    {% endif %}
                 {% endfor %}
 
                 {% for slot in day['slots'] %}
