@@ -4,7 +4,7 @@ from flask_login import current_user, login_required #, login_user, logout_user 
 #from urllib.parse import urlparse
 from app.models import db, Slot, WorkSpace
 from app.main import bp
-import datetime
+from datetime import date, timedelta
 from sqlalchemy import and_
 from .slot_forms import SlotEditForm, SlotBookingForm
 
@@ -21,7 +21,7 @@ def new_slot(workspace_id, start_time):
    if not current_user.is_admin():
       abort(403)
    
-   title = "New booking slot"
+   title = "New Booking Slot"
    workspace = WorkSpace.query.get_or_404(workspace_id)
    
    slot = Slot()
@@ -58,70 +58,6 @@ def add_slot(workspace_id):
         flash('Your changes have been saved.')
         return redirect(url_for('.show_workspace', id=workspace.id))
    return render_template('new_slot.html', title=title, form=form)
-
-@bp.route('/slot/<id>/book',methods=['POST','GET'])
-@login_required
-def booking(id):
-   slot = Slot.query.get_or_404(id)  
-
-   if slot.is_booked() and slot.user_id != current_user.id:
-      abort(403) 
-
-   form = SlotBookingForm()
-   if request.method == 'GET':
-      form.description.data = slot.description  
-      return render_template('edit_booking.html', form=form, slot=slot)
-   elif request.method == 'POST' and form.validate_on_submit():
-      if form.submit.data:
-         slot.user_id = current_user.id
-         slot.description = form.description.data
-         if current_user.is_staff():
-            slot.approved = 1
-            slot.approved_by_id = current_user.id
-         db.session.commit()      
-      return redirect(session['back_to'] or url_for('.home'))
-   return render_template('edit_booking.html', form=form, slot=slot)
-
-@bp.route('/slot/<id>/unbook',methods=['POST'])
-@login_required
-def unbook(id):
-   slot = Slot.query.get_or_404(id)  
-
-   if slot.is_booked() and slot.user_id != current_user.id:
-      abort(403) 
-   
-   slot.user_id = None
-   slot.description = ""
-   slot.approved = 0
-   slot.approved_by_id = None
-   db.session.commit()
-   return redirect(url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
-
-
-@bp.route('/slot/<id>/approve',methods=['POST'])
-@login_required
-def approve_slot(id):
-   if not current_user.is_manager():
-      abort(403)
-
-   slot = Slot.query.get_or_404(id)  
-
-   if slot.is_booked():
-      slot.approved = 1
-      slot.approved_by_id = current_user.id
-      db.session.commit()
-   
-   return redirect(session['back_to'] or url_for('.home'))
-
-@bp.route('/slots/unapproved')
-@login_required
-def unapproved_slots():
-   if not current_user.is_manager():
-      abort(403)
-
-   today = datetime.date.today()
-   slots = Slot.query.filter(and_(Slot.start_time >= today, Slot.user_id > 0, Slot.approved == 0))
-   return render_template('approve_slots.html',slots=slots)
 
 
 @bp.route('/slot/<id>/edit')
@@ -163,3 +99,42 @@ def update_slot(id):
    title = "Edit booking slot" 
    action = url_for('.update_slot', id=slot.id)
    return render_template('edit_slot.html', title=title, form=form, action=action)
+
+
+
+@bp.route('/slots/weekly')
+@login_required
+def weekly_slots():
+   if not current_user.is_admin():
+      abort(403)
+
+   start_week = -2       # means 2 weeks ago
+   number_of_weeks = 10  # number of weeks to display
+   
+   today = date.today()
+   this_monday = today - timedelta(days = today.weekday())   # today minus the weekday
+   week_start_dates = []  # list of week start dates
+   weeks = []
+   for w in range(start_week, start_week + number_of_weeks):                                   
+      week_start_dates.append( this_monday + timedelta(weeks=w) )  
+      weeks.append(w)
+
+   workspaces = WorkSpace.query.all()  
+
+   weekly_slot_counts = {}
+
+   for workspace in workspaces:   
+      slot_counts = []  # list of slot counts for each week for this workspace
+      for start_date in week_start_dates:
+         end_date = start_date + timedelta(weeks=1)
+
+         repeating_cnt = 0         
+         for slot in workspace.slots.filter(Slot.start_time.between(start_date,end_date)):
+            if slot.repeating:
+               repeating_cnt += 1  # count repeating booking slots in this week
+            
+         slot_counts.append({'date': start_date, 'count': repeating_cnt})          
+
+      weekly_slot_counts[workspace.id] = slot_counts            
+      
+   return render_template('weekly_slots.html', workspaces=workspaces, weekly_slot_counts=weekly_slot_counts, week_start_dates=week_start_dates)

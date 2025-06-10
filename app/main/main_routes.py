@@ -15,7 +15,7 @@ def home():  # Main home page
       return redirect(url_for('.login'))  # Redirect to login page if not logged in
     
     today = datetime.date.today()
-    bookings = current_user.slots.filter(Slot.start_time >= today)
+    bookings = current_user.bookings.filter(Slot.start_time >= today)
 
     session['back_to'] = url_for('.home')
     

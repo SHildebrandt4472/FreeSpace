@@ -35,3 +35,4 @@ from . import login_routes
 from . import workspace_routes
 from . import user_routes
 from . import slot_routes
+from . import booking_routes

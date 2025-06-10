@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     {% if current_user.is_authenticated %}
-      <div class="collapse navbar-collapse justify-content-end id="navbarColor01">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarColor01">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link active" href="{{ url_for('main.home') }}">My Bookings
@@ -24,9 +24,8 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin Tools</a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ url_for('main.unapproved_slots') }}">Approval</a>
-                <a class="dropdown-item" href="#">Work Spaces</a>
-                <a class="dropdown-item" href="#">Skills</a>
+                <a class="dropdown-item" href="{{ url_for('main.unapproved_bookings') }}">Approvals</a>
+                <a class="dropdown-item" href="{{ url_for('main.weekly_slots') }}">Booking Slots</a>             
                 
                 {% if current_user.is_admin() %}
                   <div class="dropdown-divider"></div>
@@ -36,12 +35,13 @@
             </li>
           {% endif %}
 
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="{{url_for('main.show_user',id = current_user.id)}}">{{current_user.display_name }}</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.display_name }}</a>
+            <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="{{url_for('main.show_user',id = current_user.id)}}">Account</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ url_for('main.logout') }}">Logout</a>              
+            </div>            
           </li>
         </ul>
       </div>

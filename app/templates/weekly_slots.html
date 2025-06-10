@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='weekly_slot_table.css') }}">
+{% endblock %}
+
+{% block content %}
+
+  <h2>Weekly Booking Slots</h2>
+
+  <table class="weekly-slot-table">
+
+    <tr>
+      <td></td>
+      {% for date in week_start_dates %}
+        <th>{{ date.strftime('%b') }}<br>{{ date.strftime('%d') }}</th>
+      {% endfor %}      
+    </tr>
+     
+    {% for workspace in workspaces %}
+      <tr>
+        <td>
+          <a href="{{ url_for('.show_workspace',id = workspace.id)}}">{{workspace.name}}</a><br>
+        </td>  
+        
+        {% for wsc in weekly_slot_counts[workspace.id] %}
+          <td>
+            <a href="{{ url_for('.show_workspace',id = workspace.id, day=wsc['date']) }}" class="slot-count {{ 'not-empty' if wsc['count'] > 0 }}">
+              {{ wsc['count'] if wsc['count'] > 0 }}
+            </a>                  
+          </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    
+  </table>  
+
+{% endblock %}

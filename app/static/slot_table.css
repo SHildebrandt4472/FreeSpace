@@ -1,7 +1,7 @@
 .slot_table {
     /* Define some Variables */    
     --px_per_min: 1px;                     
-    --col_width: 120px;                
+    --col_width: 80px;                
     --time_col_width: 40px;  
     --grid_line_colour: #666;  
     font-size: small;             

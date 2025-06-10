@@ -1,0 +1,30 @@
+
+
+.weekly-slot-table th {
+    text-align: center;    
+    background: #333;
+}
+
+.slot-count {
+  display: block;
+  text-decoration: none;           
+  border: 1px solid #666;  
+  border-radius: 5px;
+  margin: 2px;  
+  text-align: center;  
+  min-width: 40px;
+  min-height: 30px;  
+  color: white;
+}
+
+.slot-count:hover {
+    background: #444;    
+}
+
+.not-empty {
+    background: #060;    
+}
+
+
+
+
