@@ -1,29 +1,59 @@
 
 
 .weekly-slot-table th {
-    text-align: center;    
-    background: #333;
+    text-align: center;        
+    background: var(--bs-secondary);    
+
 }
 
-.slot-count {
+.weekly-slot-table td {
+    padding: 2px;    
+}
+
+th.this-week,
+td.this-week {  
+    background: rgba(255, 255, 0, 0.5);
+}
+
+
+
+.cell {
   display: block;
   text-decoration: none;           
-  border: 1px solid #666;  
+  border: 1px solid #666;    
   border-radius: 5px;
-  margin: 2px;  
+  margin: 0px;  
+  padding-top:5px;
   text-align: center;  
-  min-width: 40px;
-  min-height: 30px;  
+  min-width: 43px;
+  min-height: 35px;  
   color: white;
+  font-weight: bold;    
 }
 
-.slot-count:hover {
-    background: #444;    
+.empty {
+
 }
 
-.not-empty {
-    background: #060;    
+cell:not(.empty):hover {    
+    opacity: 50%;
 }
+
+.repeating-only {
+    background-image: url('/static/icons/timetable.png');    
+    color: #040;
+}
+
+.some-oneoffs {
+    background-image: url('/static/icons/timetable_oneoffs.png');    
+    color: rgb(153, 105, 0);
+}                   
+
+.some-booked {
+    background-image: url('/static/icons/timetable_booked.png');    
+    color: #900;
+}  
+
 
 
 

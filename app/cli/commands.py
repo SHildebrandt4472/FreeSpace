@@ -70,10 +70,27 @@ def init_data():  # Preset data for testing and initial deployment
     db.session.add(slot)
     db.session.commit()
     print("Created:", slot)
+
+
+  # print(f"Testing Clash")
+  # clash = slot.has_a_clash()
+  # print(f"Test Clash {slot}: {clash}\n")               
+
+  # slot.start_time -= datetime.timedelta(minutes=45)
+  # clash = slot.has_a_clash()
+  # print(f"Test Clash {slot}: {clash}\n")             
+
+  # slot.start_time -= datetime.timedelta(minutes=60)
+  # slot.workspace_id = 2
+  # clash = slot.has_a_clash()
+  # print(f"Test Clash {slot}: {clash}\n")             
+
+  slot.copy_to(workspace_id=printer.id)
+
 @bp.cli.command("make_css")
 def make_css():
   min = 0
   for h in range(7,20): 
     for m in range(0,60,5):
       print(f".time_{h:02}-{m:02} {{ top: calc({min} * var(--px_per_min)); }}")
-      min+= 5
+      min += 5

@@ -1,6 +1,8 @@
 
 from app.models import db
-from datetime import datetime
+from datetime import datetime, timedelta
+from sqlalchemy import and_
+import datetime
 
 
 
@@ -26,7 +28,7 @@ class Slot(db.Model):
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
 
   def __repr__(self):
-    return f"<Slot {self.id}: {self.workspace_id} - {self.start_time}>"
+    return f"<Slot {self.id}: {self.workspace_id} - {self.start_time.strftime('%a %d %b %H:%M')} ({self.duration} mins)>"
 
   def status_str(self):
     if self.user_id:
@@ -40,3 +42,51 @@ class Slot(db.Model):
   
   def is_avaliable(self):
     return(not self.is_booked())
+  
+  # check to see this time slot clashes (overlaps) any existing time slot
+  def has_a_clash(self):    
+    search_start = self.start_time - timedelta(hours=12)  # 12 hours before this time slot
+    search_end = self.start_time + timedelta(minutes=(self.duration-1)) # end of this time slot
+    # search DB for a possible clash/overlapping times
+    slot = Slot.query.filter(and_(Slot.start_time.between(search_start, search_end),  # start time with a range that COULD overlap
+                                  Slot.workspace_id == self.workspace_id,             # Has same worspace id
+                                  Slot.id != self.id                                  # isn't THIS slot (could be if modifying an existing slot) 
+                                  )).order_by(
+                                    Slot.start_time.desc()                            # order by starttime descending (so first item found is best possible clash) 
+                                  ).first()     # only return 1 record
+                            
+    #print(f"Found Slot: {slot}")    
+    if slot:  # found atleast one slot that COULD overlap
+      end_time = slot.start_time + timedelta(minutes=slot.duration)
+      if end_time > self.start_time:  # CLASH
+        #print(f"Clash: {self} with {slot}")
+        #print(f"end_time: {end_time}  start_time: {self.start_time}")
+        return True   # It DOES have a Clash
+      
+      
+    return False  # No Clash Found
+  
+  def copy_to(self, workspace_id=None, day=None):
+
+    if not workspace_id and not day:  # must pass atleast one
+      return False
+
+    if not workspace_id:
+      workspace_id = self.workspace_id  # Same Workspace
+
+    if not day:
+      day = self.start_time.date()  # Same day
+
+    new_slot = Slot(workspace_id = workspace_id,
+                    start_time = datetime.datetime.combine(day, self.start_time.time()),
+                    duration = self.duration,
+                    repeating = self.repeating)
+    
+    if new_slot.has_a_clash():  # Clashes with another time slot (for same workspace)
+      return False
+    
+    # otherwsie add the new_slot
+    db.session.add(new_slot)
+    db.session.commit()
+    return True  
+  

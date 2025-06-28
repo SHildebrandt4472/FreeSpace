@@ -101,40 +101,95 @@ def update_slot(id):
    return render_template('edit_slot.html', title=title, form=form, action=action)
 
 
-
-@bp.route('/slots/weekly')
+@bp.route('/slots/weekly', defaults={'start_week':-1})
+@bp.route('/slots/weekly/<start_week>')
 @login_required
-def weekly_slots():
+def weekly_slots(start_week):
    if not current_user.is_admin():
       abort(403)
 
-   start_week = -2       # means 2 weeks ago
+   start_week = int(start_week)       # means 2 weeks ago
    number_of_weeks = 10  # number of weeks to display
    
    today = date.today()
    this_monday = today - timedelta(days = today.weekday())   # today minus the weekday
-   week_start_dates = []  # list of week start dates
-   weeks = []
+   columns = []  # list of columns to be displayed
+
    for w in range(start_week, start_week + number_of_weeks):                                   
-      week_start_dates.append( this_monday + timedelta(weeks=w) )  
-      weeks.append(w)
+      columns.append({'date': this_monday + timedelta(weeks=w), 
+                      'week': w,
+                      'cells': {},
+                      'class': 'this-week' if w == 0 else '',
+                      })             
+          
+   workspaces = WorkSpace.query.all()
 
-   workspaces = WorkSpace.query.all()  
-
-   weekly_slot_counts = {}
-
-   for workspace in workspaces:   
+   for workspace in workspaces:     
       slot_counts = []  # list of slot counts for each week for this workspace
-      for start_date in week_start_dates:
-         end_date = start_date + timedelta(weeks=1)
+      for col in columns:
+         start_date = col['date']
+         end_date = start_date + timedelta(weeks=1)         
 
          repeating_cnt = 0         
+         total_cnt = 0
+         booked_cnt = 0
          for slot in workspace.slots.filter(Slot.start_time.between(start_date,end_date)):
+            total_cnt += 1
             if slot.repeating:
-               repeating_cnt += 1  # count repeating booking slots in this week
-            
-         slot_counts.append({'date': start_date, 'count': repeating_cnt})          
+               repeating_cnt += 1  # count repeating booking slots in this week            
+            if slot.is_booked():
+               booked_cnt += 1   
+         
+         if total_cnt == 0:
+             class_str = 'empty'  
+         elif repeating_cnt == total_cnt:
+            class_str = 'repeating-only'
+         else:   
+            class_str = 'some-oneoffs'                   
 
-      weekly_slot_counts[workspace.id] = slot_counts            
+         if booked_cnt > 0:
+             class_str = 'some-booked'   
+
+         col['cells'][workspace.id] = {'display': str(repeating_cnt) if total_cnt else '',   #Value to display
+                                       'slot_cnt': total_cnt,
+                                       'class': class_str,
+                                      }
+
+   # find last column with slots in it
+   last_col = None
+   for col in columns:         
+      has_slots = False
+      for cell in col['cells']:
+         if col['cells'][cell]['slot_cnt'] > 0:
+            has_slots = True
+            break # no point continuing, found some slots
+         
+      if has_slots:
+         last_col = col
+
+   if last_col and last_col != columns[-1]:         
+      last_col['copy_url'] = url_for('.copy_weekly_slots', from_week=last_col['week'], to_week=last_col['week']+1)
+
+   prev_url = url_for('.weekly_slots', start_week=start_week-7)   
+   next_url = url_for('.weekly_slots', start_week=start_week+7)   
       
-   return render_template('weekly_slots.html', workspaces=workspaces, weekly_slot_counts=weekly_slot_counts, week_start_dates=week_start_dates)
+   return render_template('weekly_slots.html', workspaces=workspaces, columns=columns, next_url=next_url, prev_url=prev_url)
+
+
+@bp.route('/slots/weekly/copy/<int:from_week>/<int:to_week>',methods=['POST'])
+@login_required
+def copy_weekly_slots(from_week, to_week):
+   if not current_user.is_admin():
+      abort(403)
+
+   today = date.today()
+   this_week = today - timedelta(days = today.weekday()) # Monday of this week (today minus the weekday)
+   from_start = this_week + timedelta(weeks=from_week)  # week 0 is this week
+   from_end = from_start + timedelta(days=7)
+
+   for slot in Slot.query.filter(Slot.start_time.between(from_start, from_end)):
+      if slot.repeating:
+         to_date = slot.start_time.date() + timedelta(weeks = (to_week - from_week))
+         slot.copy_to(day=to_date)
+
+   return redirect(url_for('.weekly_slots'))

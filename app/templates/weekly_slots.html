@@ -11,10 +11,15 @@
   <table class="weekly-slot-table">
 
     <tr>
-      <td></td>
-      {% for date in week_start_dates %}
-        <th>{{ date.strftime('%b') }}<br>{{ date.strftime('%d') }}</th>
+      <td>
+        {{h.button_to_url('<<', prev_url) | safe}}
+      </td>
+      {% for col in columns %}
+        <th class="{{ col['class'] }}">{{ col['date'].strftime('%b') }}<br>{{ col['date'].strftime('%d') }}</th>
       {% endfor %}      
+      <td>
+        {{h.button_to_url('>>', next_url) | safe}}
+      </td>
     </tr>
      
     {% for workspace in workspaces %}
@@ -23,15 +28,26 @@
           <a href="{{ url_for('.show_workspace',id = workspace.id)}}">{{workspace.name}}</a><br>
         </td>  
         
-        {% for wsc in weekly_slot_counts[workspace.id] %}
-          <td>
-            <a href="{{ url_for('.show_workspace',id = workspace.id, day=wsc['date']) }}" class="slot-count {{ 'not-empty' if wsc['count'] > 0 }}">
-              {{ wsc['count'] if wsc['count'] > 0 }}
+        {% for col in columns %}
+          <td class="{{ col['class'] }}">
+            <a href="{{ url_for('.show_workspace',id = workspace.id, day=col['date']) }}" class="cell {{ col['cells'][workspace.id]['class'] }}">
+              {{ col['cells'][workspace.id]['display'] }}
             </a>                  
           </td>
         {% endfor %}
       </tr>
     {% endfor %}
+
+      <tr>
+        <td></td>
+        {% for col in columns %}
+          {% if 'copy_url' in col %}
+            <td colspan="2">{{ h.post_to_url('Copy&#x2b0f;', col['copy_url'], confirm_mesg="Copy all weekly slots to next empty week. Are You Sure") | safe}}</td>                      
+          {% else %}
+            <td></td>  
+          {% endif %}  
+        {% endfor %}      
+      </tr>
     
   </table>  
 
