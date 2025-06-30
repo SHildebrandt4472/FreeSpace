@@ -7,6 +7,7 @@ from app.main import bp
 from datetime import date, timedelta
 from sqlalchemy import and_
 from .slot_forms import SlotEditForm, SlotBookingForm
+import datetime as dt
 
 @bp.route('/slot/<id>') 
 @login_required
@@ -26,14 +27,18 @@ def new_slot(workspace_id, start_time):
    
    slot = Slot()
    slot.start_time = start_time  
+   slot.duration = 60
 
    form = SlotEditForm()
-   form.start_time.data = slot.start_time
+   #form.start_time.data = slot.start_time
+   form.day.data = slot.start_time.strftime("%Y-%m-%d")
+   form.hour.data = slot.start_time.hour
+   form.minute.data = slot.start_time.minute
    form.duration.data = slot.duration
    form.description.data = slot.description
    form.repeating.data = slot.repeating
    action = url_for('.add_slot', workspace_id=workspace.id)
-   return render_template('edit_slot.html', title=title, action=action, form=form)
+   return render_template('edit_slot.html', title=title, action=action, form=form, slot=slot)
 
 
 @bp.route('/workspace/<workspace_id>/add_slot',methods=['POST'])
@@ -48,7 +53,9 @@ def add_slot(workspace_id):
 
    form = SlotEditForm()
    if form.validate_on_submit():
-        slot.start_time = form.start_time.data
+        #slot.start_time = form.start_time.data
+        day = dt.datetime.strptime(form.day.data, "%Y-%m-%d")
+        slot.start_time = dt.datetime.combine(day, dt.time(form.hour.data, form.minute.data))
         slot.duration = form.duration.data
         slot.description = form.description.data
         slot.repeating = form.repeating.data
@@ -66,16 +73,19 @@ def edit_slot(id):
    if not current_user.is_admin():
       abort(403)  
 
-   title = "Edit booking slot"   
+   title = "Edit Booking Slot"   
    slot = Slot.query.get_or_404(id)   
 
    form = SlotEditForm()
-   form.start_time.data = slot.start_time
+   #form.start_time.data = slot.start_time
+   form.day.data = slot.start_time.strftime("%Y-%m-%d")
+   form.hour.data = slot.start_time.hour
+   form.minute.data = slot.start_time.minute
    form.duration.data = slot.duration
    form.description.data = slot.description
    form.repeating.data = slot.repeating
    action = url_for('.update_slot', id=slot.id)
-   return render_template('edit_slot.html', title=title, form=form, action=action,)
+   return render_template('edit_slot.html', title=title, form=form, action=action, slot=slot)
 
 
 @bp.route('/slot/<id>/update', methods=['POST'])
@@ -88,7 +98,9 @@ def update_slot(id):
    
    form = SlotEditForm()
    if form.validate_on_submit():
-        slot.start_time = form.start_time.data
+        #slot.start_time = form.start_time.data
+        day = dt.datetime.strptime(form.day.data, "%Y-%m-%d")
+        slot.start_time = dt.datetime.combine(day, dt.time(form.hour.data, form.minute.data))
         slot.duration = form.duration.data
         slot.description = form.description.data
         slot.repeating = form.repeating.data   
@@ -98,7 +110,7 @@ def update_slot(id):
 
    title = "Edit booking slot" 
    action = url_for('.update_slot', id=slot.id)
-   return render_template('edit_slot.html', title=title, form=form, action=action)
+   return render_template('edit_slot.html', title=title, form=form, action=action, slot=slot)
 
 
 @bp.route('/slots/weekly', defaults={'start_week':-1})

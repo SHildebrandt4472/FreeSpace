@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, abort, session
+from flask import render_template, flash, redirect, url_for, request, abort, session, current_app
 
 from flask_login import current_user, login_required #, login_user, logout_user #, login_required
 #from urllib.parse import urlparse
@@ -7,6 +7,7 @@ from app.main import bp
 import datetime
 #from sqlalchemy import text
 from .workspace_forms import WorkspaceEditForm
+import os
 
 
 
@@ -15,7 +16,7 @@ from .workspace_forms import WorkspaceEditForm
 def workspaces():  # Main home page:
     workspaces = WorkSpace.query.all()
 
-    return render_template('workspaces.html',spaces = workspaces)
+    return render_template('workspaces.html',spaces = workspaces, page='Workspaces')
 
 @bp.route('/workspace/<id>', defaults = {'day':None} ) 
 @bp.route('/workspace/<id>/<date:day>') 
@@ -86,16 +87,25 @@ def update_workspace(id):
 
    form = WorkspaceEditForm()
    if form.validate_on_submit():
-        workspace.name = form.name.data
-        workspace.description = form.description.data
-        workspace.location = form.location.data
-        workspace.status = form.status.data
+         workspace.name = form.name.data
+         workspace.description = form.description.data
+         workspace.location = form.location.data
+         workspace.status = form.status.data
 
-        if not workspace.id:
+         if not workspace.id:
             db.session.add(workspace)
-        db.session.commit()
-        flash('Your changes have been saved.')
-        return redirect(url_for('.workspaces'))
+         db.session.commit()
+
+         # Handle Thumbnail files 
+         thumbnail = form.thumbnail.data         
+         if thumbnail and thumbnail.filename != '':
+            file_ext = os.path.splitext(thumbnail.filename)[1]            
+            workspace.thumbnail = f"workspace_{workspace.id}{file_ext}"
+            thumbnail.save(os.path.join(current_app.static_folder, 'thumbnails', workspace.thumbnail))            
+            db.session.commit() # save thumbnail name
+    
+         flash('Your changes have been saved.')
+         return redirect(url_for('.show_workspace', id=workspace.id))
    return render_template('edit_workspace.html', title=title, form=form)
 
 @bp.route('/workspace/<id>/delete', methods=['POST'])

@@ -9,6 +9,8 @@ import datetime
 class Slot(db.Model):
 
   duration_choices = [5 * x for x in range(3, 25)]  # create list of numbers from 15 mins to 240(3 hours) going up by 5
+  hour_choices = [x for x in range(7, 19)] 
+  minute_choices = [(x, f"{x:02d}") for x in range(0, 60, 5)] 
 
   id = db.Column(db.Integer, primary_key=True)
   workspace_id = db.Column(db.Integer, db.ForeignKey('work_space.id'))

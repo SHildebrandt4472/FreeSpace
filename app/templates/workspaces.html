@@ -1,14 +1,33 @@
 {% extends "base.html" %}
 
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='workspace_list.css') }}">
+{% endblock %}
+
 {% block content %}
 
-  <h2>Work Spaces</h2>
-
-  {% for space in spaces %}
-  <a href="{{ url_for('.show_workspace',id = space.id)}}">{{space.name}} - {{space.description}}</a><br>
-  {% endfor %}
-
-  <a href="{{ url_for('.edit_workspace')}}">New Workspace</a>
+  <h2>Work Spaces</h2>  
+  
+  <div>
+    {% if spaces %}
+      <ul class="workspaces">
+        {% for workspace in spaces %}
+          {% include '_workspace_panel.html' %}
+        {% endfor %}
+      </ul> 
+    {% else %}
+      <p><b>No Workspaces Found</b></p>
+    {% endif %}
+  
+    </div>
+  {% if current_user.is_manager() %}
+    <div>
+      {{ h.button_to('Add Workspace', '.edit_workspace') |safe}} 
+    </div>
+  {% endif %}  
+  
 {% endblock %}
+
+
 
 

@@ -2,42 +2,50 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <form class="settings" action="{{action}}" method="post">
-        {{ form.hidden_tag() }}
-          <p>
-            {{ form.start_time.label }}<br>
-            {{ form.start_time() }}            
-            {% for error in form.start_time.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+    <div class="col-lg-8 border border-1 p-3 rounded bg-secondary">
+      <div class="">
+        <h2>{{ slot.start_time.strftime("%A %d %b") }}</h2>
+      </div>
+      <form action="{{action}}" method="post">
+        {{ form.hidden_tag() }}                 
 
-          <p>
-            {{ form.duration.label }}<br>
-            {{ form.duration() }}<br>
-            {% for error in form.duration.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+        <div class="col-sm-4">
+          <label class="form-label" for="hour">Start Time</label>
+          <div class="input-group">                        
+            {{ form.hour(class_="form-select") }}
+            {{ form.minute(class_="form-select") }}
+          </div>
+        </div>
 
-          <p>
-            {{ form.description.label }}<br>
-            {{ form.description(size=32) }}<br>
-            {% for error in form.description.errors %}
+        <div>
+          {{ form.duration.label(class_="form-label") }}
+          {{ form.duration(class_="form-select") }}
+          {% for error in form.duration.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+          {% endfor %}
+        </div>   
 
-          <p>
-            {{ form.repeating.label }}<br>
-            {{ form.repeating() }}<br>
-            {% for error in form.repeating.errors %}
+        <div>
+          {{ form.description.label }}
+          {{ form.description(rows=5, class_="form-control") }}
+          {% for error in form.description.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+          {% endfor %}
+        </div>
 
-          <p>{{ form.submit() }}</p>
+        <div class="form-check">            
+          {{ form.repeating(class_="form-check-input") }}
+          {{ form.repeating.label(class_="form-check-label") }}
+          {% for error in form.repeating.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+          
+        <div>
+          {{ form.submit(class_="btn btn-primary") }}
+        </div>
     </form>
+  </div>
 
 
 

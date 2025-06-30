@@ -6,5 +6,7 @@ class Config(object): #This is the main configurations for the app
   SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database', DATABASE_FILENAME) 
   SQLALCHEMY_TRACK_MODIFICATIONS = False
   SECRET_KEY = "ThisIsMySuperSecretKey"  
+  UPLOAD_EXTENSIONS = ['.jpg', '.png']
+  MAX_CONTENT_LENGTH = 1024 * 1024
 
   

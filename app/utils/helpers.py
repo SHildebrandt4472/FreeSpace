@@ -8,14 +8,22 @@ from flask import url_for
 #
 # General Text Formatting
 #
-
-
 def pluralise(word, cnt, suffix="s"):
   n = int(cnt)
   if n == 1 or n == -1:
     return(word)
   else:
     return(word+suffix)
+  
+def short_str(text, max_chars):
+  if len(text) < max_chars:
+    return text
+  return text[:max_chars] + '...'
+
+def display_if(cond,t,f=''):
+  if cond:
+    return t
+  return f
 
 #
 # Date Time Routines
@@ -72,6 +80,8 @@ def class_for_slot(slot):
 def create_start_time(day,hour,min):
   return datetime.datetime.combine(day, datetime.time(hour, min, 0))
 
+
+
 #
 #  HTML Generators
 #
@@ -90,6 +100,10 @@ def button_to_url(button_text, url, attr={}):
   else:
     attr['class'] = 'btn btn-primary'
   return link_to_url(button_text, url, attr)
+
+def button_to(button_text, endpoint, **endpoint_opts):
+  url = url_for(endpoint, **endpoint_opts)
+  return button_to_url(button_text, url)    
 
 def post_to_url(link_text, url, confirm_mesg=""):  
   onclick=""

@@ -2,12 +2,16 @@
 
 {% block content %}
 
-  <h2>My bookings</h2>
-  {% for booking in bookings %}
-    <div class="booking">
-      {{booking.workspace.name}} {{booking.start_time.date()}} {{booking.start_time.time()}} <a href="{{url_for('.booking', id=booking.id)}}">Edit</a>
-    </div>
-  {% endfor %}
+  <h2>Current Bookings</h2>
+  {% if bookings.count() > 0 %}
+    {% for booking in bookings %}
+      <div class="booking">
+        {{booking.workspace.name}} {{booking.start_time.date()}} {{booking.start_time.time()}} <a href="{{url_for('.booking', id=booking.id)}}">Edit</a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div>You currently have no bookings coming up</div>  
+  {% endif %}    
 
 
 {% endblock %}

@@ -20,6 +20,8 @@ class WorkSpace(db.Model):
   location = db.Column(db.String(32))
   status = db.Column(db.Integer, default=STS_IN_SERVICE)
 
+  thumbnail = db.Column(db.String(32))
+
   created_at = db.Column(db.DateTime, default=db.func.datetime('now')) 
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
   slots = db.relationship('Slot', backref='workspace', lazy='dynamic')

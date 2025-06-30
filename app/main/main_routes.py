@@ -19,5 +19,5 @@ def home():  # Main home page
 
     session['back_to'] = url_for('.home')
     
-    return render_template('index.html',bookings=bookings) 
+    return render_template('index.html',bookings=bookings, page='MyBookings') 
 

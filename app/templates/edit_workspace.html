@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <form class="settings" action="{{action}}" method="post">
+    <form class="settings" action="{{action}}" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
           <p>
             {{ form.name.label }}<br>
@@ -36,7 +36,14 @@
                <span style="color: red;">[{{ error }}]</span>
              {% endfor %}
             </p>
-	  
+
+            <p>
+              {{ form.thumbnail.label }}<br>
+              {{ form.thumbnail() }}<br>
+              {% for error in form.thumbnail.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>  
 
           <p>{{ form.submit() }}</p>
     </form>
