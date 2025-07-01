@@ -1,9 +1,28 @@
   {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div id="messages">
+    {% if messages %}      
         {% for category, message in messages %}
-          <div class="{{ category }}">{{ message }}</div>
-        {% endfor %}
-      </div>
+          <div id="flash-message" class="alert {{ h.include_if(category=='error', 'alert-danger', 'alert-success') }} alert-dismissible fade show slide-alert">
+            <div>{{ message }}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}      
+
+        <script>
+          // Wait for the DOM to load
+          document.addEventListener('DOMContentLoaded', function () {
+            const alertElement = document.getElementById('flash-message');
+        
+            if (alertElement) {
+              setTimeout(() => {        
+                alertElement.classList.add('slide-up')
+                // Trigger the Bootstrap alert dismissal
+                const alert = bootstrap.Alert.getOrCreateInstance(alertElement);        
+                alert.close();
+              }, 2000); 
+            }
+          });
+         </script>
+
+
     {% endif %}
   {% endwith %}

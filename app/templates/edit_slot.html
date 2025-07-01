@@ -2,14 +2,14 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <div class="col-lg-8 border border-1 p-3 rounded bg-secondary">
+    <div class="col-lg-4 border border-1 p-3 rounded bg-secondary">
       <div class="">
         <h2>{{ slot.start_time.strftime("%A %d %b") }}</h2>
       </div>
       <form action="{{action}}" method="post">
         {{ form.hidden_tag() }}                 
 
-        <div class="col-sm-4">
+        <div class="col-sm-8">
           <label class="form-label" for="hour">Start Time</label>
           <div class="input-group">                        
             {{ form.hour(class_="form-select") }}
@@ -17,33 +17,18 @@
           </div>
         </div>
 
-        <div>
-          {{ form.duration.label(class_="form-label") }}
-          {{ form.duration(class_="form-select") }}
-          {% for error in form.duration.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </div>   
+        {% with field = form.duration %}  
+          {% include "_form_field_text.html" %}
+        {% endwith %}      
+       
 
-        <div>
-          {{ form.description.label }}
-          {{ form.description(rows=5, class_="form-control") }}
-          {% for error in form.description.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </div>
+        {% with field = form.repeating %}  
+          {% include "_form_field_checkbox.html" %}
+        {% endwith %}         
 
-        <div class="form-check">            
-          {{ form.repeating(class_="form-check-input") }}
-          {{ form.repeating.label(class_="form-check-label") }}
-          {% for error in form.repeating.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </div>
-          
-        <div>
-          {{ form.submit(class_="btn btn-primary") }}
-        </div>
+        {% with field = form.submit %}  
+          {% include "_form_field_submit.html" %}
+        {% endwith %} 
     </form>
   </div>
 

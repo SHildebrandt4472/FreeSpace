@@ -1,0 +1,7 @@
+<div class="form-check form-switch">            
+    {{ field(class_="form-check-input") }}
+    {{ field.label(class_="form-check-label") }}    
+    {% for error in field.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+</div>

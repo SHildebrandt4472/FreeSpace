@@ -1,46 +1,55 @@
 
-{% if prev_url %}
-    <a class = "button" href="{{prev_url}}">&lt Previous</a>
-{%endif%}
-
-{% if next_url %}
-    <a class = "button" href="{{next_url}}">Next &gt</a>
-{%endif%}
-
-<table class="slot_table">
-    <tr>
-        <th></th>
-        {% for day in daily_slots %}
-            <th>{{day['date'].strftime("%a %d %b")}}</th>
+<div>
+  <div class="mb-1">
+    {% if prev_url %}
+        <a class = "btn btn-primary btn-sm" href="{{prev_url}}">&lt Previous</a>
+    {%endif%}    
         
-        {% endfor %}
-    </tr>
-    <tr>
-        <td class="time_col">
+    {% if next_url %}
+       <a class="btn btn-primary btn-sm" href="{{next_url}}">Next &gt</a>
+    {%endif%}
+  </div>
+
+  <div class="slot-table">
+    <div class="slot-table-time-col">
+        <div class="slot-table-col-heading">
+
+        </div>
+
+        <div class="slot-table-col-data">
             {% for hour in range(7,20) %}
-                <div class="time_{{'%02d'%hour}}-00">{{hour}}:00</div>
-                <div class="time_{{'%02d'%hour}}-30">{{hour}}:30</div>
-                {% endfor %}
-            
-                                
-        </td>
+                <div class="slot-table-time-cell time_{{'%02d'%hour}}-00">{{hour}}:00</div>
+                <div class="slot-table-time-cell time_{{'%02d'%hour}}-30">{{hour}}:30</div>
+            {% endfor %}       
+        </div>
+    </div>    
 
-        {% for day in daily_slots %}
-            <td class="col">
-                {% for hour in range(7,20) %}
-                    {% if current_user.is_admin() %}
-                        <a class="empty_slot time_{{'%02d' % hour}}-00"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,0)) }}"></a>
-                        <a class="empty_slot time_{{'%02d' % hour}}-30"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,30)) }}"></a>
-                    {% else %}
-                    <div class="empty_slot time_{{'%02d' % hour}}-00"></div>
-                    <div class="empty_slot time_{{'%02d' % hour}}-30"></div>
-                    {% endif %}
-                {% endfor %}
+    {% for day in daily_slots %}
+        <div class="slot-table-col"">
+          <div class="slot-table-col-heading">
+            {{ day['date'].strftime("%a %d %b") }}
+          </div>
 
-                {% for slot in day['slots'] %}
-                    {%include "_slot.html"%}
-                {%endfor%}
-            </td>
-        {%endfor%}
-    </tr>
-</table>
+          <div class="slot-table-col-data">
+            {% for hour in range(7,20) %}
+                {% if edit_slots %}
+                    <a class="empty-slot time_{{'%02d' % hour}}-00"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,0)) }}"></a>
+                    <a class="empty-slot time_{{'%02d' % hour}}-30"  href="{{url_for('main.new_slot', workspace_id=workspace.id, start_time = h.create_start_time(day['date'],hour,30)) }}"></a>
+                {% else %}
+                    <div class="empty-slot time_{{'%02d' % hour}}-00"></div>
+                    <div class="empty-slot time_{{'%02d' % hour}}-30"></div>
+                {% endif %}
+            {% endfor %}
+
+            {% for slot in day['slots'] %}
+              {% if edit_slots %}
+                {% include "_slot_table_slot.html" %}                
+              {% else %}
+                {% include "_slot_table_booking.html" %}                
+              {% endif %}
+            {%endfor%}          
+          </div>
+      </div>                 
+    {% endfor %}
+  </div>    
+</div>

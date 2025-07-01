@@ -1,41 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <div class="col-sm-8 border border-1 p-3 rounded bg-secondary mt-4">
     <h1>{{ title }}</h1>
     <form class="settings" action="{{action}}" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-          <p>
-            {{ form.name.label }}<br>
-            {{ form.name(size=32) }}<br>
-            {% for error in form.name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+        {% with field = form.name %}  
+          {% include "_form_field_text.html" %}
+        {% endwith %}  
+       
+        {% with field = form.description %}  
+          {% include "_form_field_text.html" %}
+        {% endwith %} 
 
-          <p>
-            {{ form.description.label }}<br>
-            {{ form.description(size=32) }}<br>
-            {% for error in form.description.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+        {% with field = form.location %}  
+          {% include "_form_field_text.html" %}
+        {% endwith %} 
 
-          <p>
-            {{ form.location.label }}<br>
-            {{ form.location(size=64) }}<br>
-            {% for error in form.location.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-
-	  
-          <p>
-            {{ form.status.label }}<br>
-            {{ form.status() }}<br>
-            {% for error in form.status.errors %}
-               <span style="color: red;">[{{ error }}]</span>
-             {% endfor %}
-            </p>
+        {% with field = form.status %}  
+          {% include "_form_field_select.html" %}
+        {% endwith %} 
 
             <p>
               {{ form.thumbnail.label }}<br>
@@ -45,8 +29,11 @@
               {% endfor %}
             </p>  
 
-          <p>{{ form.submit() }}</p>
+          {% with field = form.submit %}  
+            {% include "_form_field_submit.html" %}
+          {% endwith %} 
     </form>
+  </div>
 
 
 

@@ -12,11 +12,11 @@ class SlotEditForm(FlaskForm):
     hour = SelectField("Hour", choices=Slot.hour_choices, coerce=int)
     minute = SelectField("Minutes", choices=Slot.minute_choices, coerce=int)
     duration = SelectField('Duration (mins)', choices=Slot.duration_choices, coerce=int, validators=[DataRequired()])
-    description = TextAreaField('Description')
-    repeating = BooleanField("Repeating")      
+    #description = TextAreaField('Description')
+    repeating = BooleanField("Repeat Weekly")      
     submit = SubmitField('Save')
 
 class SlotBookingForm(FlaskForm):    
-    description = StringField('Description')
+    description = TextAreaField('Description')
     submit = SubmitField('Book')
     cancel = SubmitField('Cancel')

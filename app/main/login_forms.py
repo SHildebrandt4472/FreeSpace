@@ -6,17 +6,17 @@ from app.models import User
 
 #Forms for login and registration
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()], render_kw={"placeholder": "Enter Username"})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Enter Password"})
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
 
 class RegistrationForm(FlaskForm):
-    registration_code = StringField('Registration Code', validators=[DataRequired()])
-    username = StringField('Username/Login', validators=[DataRequired()])
-    display_name = StringField('Full Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    registration_code = StringField('Registration Code', validators=[DataRequired()], render_kw={"placeholder": "Enter Registration Code"})
+    username = StringField('Username/Login', validators=[DataRequired()], render_kw={"placeholder": "Enter Username"})
+    display_name = StringField('Full Name', validators=[DataRequired()], render_kw={"placeholder": "Enter Full Name"})
+    email = StringField('Email', validators=[DataRequired(), Email()], render_kw={"placeholder": "Enter Email Address"})
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Verify Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')

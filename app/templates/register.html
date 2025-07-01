@@ -1,88 +1,57 @@
- <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-  <head>
-    <title>      
-      {% if title %}
-	      {{title}}
-      {%endif%}
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">    
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">    
-  </head>
-  <body>
-    {% include '_header.html' %}
-    <div id="page">
-      <div id="registrationform" >
-        <h1>New User Registration</h1>
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='xlogin.css') }}">
+{% endblock %}
 
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div id="messages">
-              {% for message in messages %}
-                <p class="error">{{ message }}</p>
-              {% endfor %}
-            </div>
-          {% endif %}
-        {% endwith %}
+{% block page_flash %}{% endblock %}
 
-	      <form class="login"action="" method="post">
-          {{ form.hidden_tag() }}
-          <p>
-            {{ form.registration_code.label }}<br>
-            {{ form.registration_code(size=16) }}<br>
-            {% for error in form.registration_code.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+{% block content %}
+<div class="row justify-content-center">
+  
+  <div class="mt-5 p-3 border border-1 rounded bg-secondary" style="max-width: 450px;">
 
-          <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+    <h1 class="text-center">New User Registration</h1> 
+    
+    {% include '_flash_messages.html' %}    
 
-          <p>
-            {{ form.display_name.label }}<br>
-            {{ form.display_name(size=32) }}<br>
-            {% for error in form.display_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
+	  <form action="" method="post">
+      {{ form.hidden_tag() }}
 
-          <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=64) }}<br>
-            {% for error in form.email.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-         <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>
-            {{ form.password2.label }}<br>
-            {{ form.password2(size=32) }}<br>
-            {% for error in form.password2.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-          </p>
-          <p>{{ form.submit() }}</p>
-        </form>
+      {% with field = form.registration_code %}  
+        {% include "_form_field_text.html" %}
+      {% endwith %}          
+
+      {% with field = form.username %}  
+        {% include "_form_field_text.html" %}
+      {% endwith %}  
+      
+      {% with field = form.display_name %}  
+        {% include "_form_field_text.html" %}
+      {% endwith %}          
+
+      {% with field = form.email %}  
+        {% include "_form_field_text.html" %}
+      {% endwith %}          
+
+      {% with field = form.password %}  
+        {% include "_form_field_text.html" %}
+      {% endwith %}    
+      
+      {% with field = form.password2 %}  
+        {% include "_form_field_text.html" %}
+      {% endwith %}          
+
+      {% with field = form.submit %}  
+        {% include "_form_field_submit.html" %}
+      {% endwith %}          
+    </form>
         
-        <div>
-          <hr>
-          <p><a href="{{ url_for('.home') }}">Back</a></li></p>
-        </div>  
-      </div>
-    </div>
-   </body>
-</html>
+    <div>
+      <hr>
+      <p><a href="{{ url_for('.home') }}">Back</a></li></p>
+    </div>  
+  </div>
+</div>
+{% endblock %}
 

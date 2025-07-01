@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>      
       {% if title %}
-	-     {{title}}
+	      {{title}}
       {% else %}
         FreeSpace
       {%endif%}
@@ -19,14 +19,17 @@
   
   <body>
     {% include '_header.html' %}
+
+    {% block page_flash %}
+        {% include '_flash_messages.html' %}
+    {% endblock %}
     
     <div id="page" class="container">
-      {% block page_flash %}
-        {% include '_flash_messages.html' %}
-      {% endblock %}
+      
       
       {% block content %}{% endblock %}
     </div>
    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+ 
    </body>
 </html>

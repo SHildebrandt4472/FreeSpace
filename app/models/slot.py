@@ -32,17 +32,25 @@ class Slot(db.Model):
   def __repr__(self):
     return f"<Slot {self.id}: {self.workspace_id} - {self.start_time.strftime('%a %d %b %H:%M')} ({self.duration} mins)>"
 
-  def status_str(self):
+  def booking_status_str(self, current_user=None):
+    if current_user and self.user_id == current_user.id:
+      return "Booked"    
     if self.user_id:
-      return "Booked"
+      return "Unavailable"
     return "Available"
+  
+  def status_str(self):
+    if self.repeating: 
+      return "Weekly"        
+    return "Onceoff"
+
   
   def is_booked(self):
     if self.user_id:
       return True
     return False
   
-  def is_avaliable(self):
+  def is_available(self):
     return(not self.is_booked())
   
   # check to see this time slot clashes (overlaps) any existing time slot

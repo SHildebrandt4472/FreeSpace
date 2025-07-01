@@ -18,11 +18,11 @@ def workspaces():  # Main home page:
 
     return render_template('workspaces.html',spaces = workspaces, page='Workspaces')
 
-@bp.route('/workspace/<id>', defaults = {'day':None} ) 
+@bp.route('/workspace/<id>', defaults = {'day':None} )
 @bp.route('/workspace/<id>/<date:day>') 
 @login_required
 def show_workspace(id,day):
-   workspace = WorkSpace.query.get_or_404(id)
+   workspace = WorkSpace.query.get_or_404(id)   
 
    if not day:
       day = datetime.date.today()
@@ -39,12 +39,13 @@ def show_workspace(id,day):
 
    for slot in workspace.slots.filter(Slot.start_time.between(start_date,end_date)):
          dow = slot.start_time.weekday()
-         daily_slots[dow]['slots'].append(slot)
+         daily_slots[dow]['slots'].append(slot)   
 
+   edit_slots = current_user.is_admin() and request.args.get('edit')
    next_url = url_for('.show_workspace',id=id, day=end_date)
    prev_url = url_for('.show_workspace',id=id, day=start_date-datetime.timedelta(days=1))
    session['back_to'] = url_for('.show_workspace', id=id, date=day)#slot.start_time.date())
-   return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url)
+   return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url, edit_slots=edit_slots)
 
 @bp.route('/workspace/new', defaults={'id':None})
 @bp.route('/workspace/<id>/edit')

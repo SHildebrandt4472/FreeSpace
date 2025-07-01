@@ -5,6 +5,7 @@
 import datetime
 from flask import url_for
 
+
 #
 # General Text Formatting
 #
@@ -20,7 +21,7 @@ def short_str(text, max_chars):
     return text
   return text[:max_chars] + '...'
 
-def display_if(cond,t,f=''):
+def include_if(cond,t,f=''):
   if cond:
     return t
   return f
@@ -71,11 +72,24 @@ def class_for_slot(slot):
   cls = "slot"
   cls += " time_" + slot.start_time.strftime("%H-%M")
   cls += f" dur_{slot.duration}"
-  if slot.user_id:
-    cls += " not_available"
+  if slot.repeating:
+    cls += " weekly"
+  else:
+    cls += " onceoff"
+  return cls
+
+def class_for_booking(slot, current_user):
+  cls = "slot"
+  cls += " time_" + slot.start_time.strftime("%H-%M")
+  cls += f" dur_{slot.duration}"
+  if slot.user_id == current_user.id:
+    cls += " booked"
+  elif slot.user_id:   
+    cls += " not-available"
   else:
     cls += " available"
   return cls
+
 
 def create_start_time(day,hour,min):
   return datetime.datetime.combine(day, datetime.time(hour, min, 0))

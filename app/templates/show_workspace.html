@@ -44,11 +44,10 @@
 
     <div class="col-md-9">
 
-      {% with slots=workspace.slots%}
+
+      {% with slots=workspace.slots %}        
         {% include "_slot_table.html"%}
       {% endwith %}
-
-    <a href="{{url_for('.edit_workspace',id=workspace.id)}}">Edit workspace</a>
 
     <form action="{{ url_for('.delete_workspace', id=workspace.id) }}" method="POST">
       <input class="delete" type="submit" value="Delete" onclick="return confirm('Delete Workspace {{workspace.name}}\nAre You Sure?')">

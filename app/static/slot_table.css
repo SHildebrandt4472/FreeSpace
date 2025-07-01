@@ -1,26 +1,34 @@
-.slot_table {
-    /* Define some Variables */    
+
+.slot-table {
+    /*border: 1px solid blue; */
     --px_per_min: 1px;                     
-    --col_width: 80px;                
+    --col_width: 75px;                
     --time_col_width: 40px;  
-    --grid_line_colour: #666;  
-    font-size: small;             
-    border-spacing: 2px 2px;   
-    border: 2px solid #00a;                     
-}            
+    --grid_line_colour: #444;  
 
-.slot_table td {                
-    vertical-align: top;
-    padding: 0px;               
-    height: calc(780 * var(--px_per_min));
-}            
-
-.time_col {
-    position: relative;
-    width: var(--time_col_width); 
+    font-size: small;   
+    display:inline-block;
+    min-width: calc(var(--time_col_width) + 7 * var(--col_width) + 20px);
+    background: var(--bs-dark);
+    box-sizing: border-box;    
 }
 
-.time_col div {
+@media screen and (min-width: 1200px) {
+    .slot-table {
+      --col_width: 110px; 
+    }
+}
+
+
+.slot-table-time-col {
+    /*border: 1px solid green;*/
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: var(--time_col_width);
+}
+
+.slot-table-time-cell {
     border: 1px solid var(--grid_line_colour);
     position: absolute;             
     width: var(--time_col_width); 
@@ -28,51 +36,108 @@
     box-sizing: border-box;                               
 }
 
-.col {
-    position: relative;
-    width: var(--col_width); 
-    /*padding-left: 5px;                           
-    padding-right: 5px; */                          
-}               
+.slot-table-col {
+    /*border: 1px solid lightgreen;*/
+    display: inline-block;
+    vertical-align: top;
+    width: var(--col_width);        
+}
+
+.slot-table-col-heading {
+   /* border: 1px solid lightcyan; */
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background: var(--bs-primary);
+}
+
+.slot-table-col-data {
+    /*border: 1px solid red;*/
+    position: relative;    
+    height: calc(780 * var(--px_per_min));
+}
+
+.empty-slot {                
+    min-width: var(--col_width);                  
+    border: 1px solid var(--grid_line_colour);    
+    height: calc(30 * var(--px_per_min) - 1px);
+    position: absolute;        
+}
 
 .slot {                
-    display: block;
-    min-width: var(--col_width);  
+    display: block;    
+    width: var(--col_width);     
     padding: 0px 5px;                     
     box-sizing: border-box;
     overflow: hidden;    
     position: absolute;  
-    text-decoration: none;                                  
+    
+    text-decoration: none; 
+    border-radius: 6px;   
+    box-shadow: 2px 4px 4px rgba(0,0,0,0.5);
 }  
 
+.available {    
+    /* color: #dfd;        
+    background-color: rgb(17, 126, 17);
+    border: 1px solid rgb(13, 99, 13); */  
+    color: var(--bs-success-color);
+    background: var(--bs-success);
+    border: 1px solid var(--bs-success-border-subtle);
 
-.available {
-    color: #dfd;    
-    background-color: rgb(10, 60, 10);
-    border: 1px solid rgb(0, 100, 0);    
 }
-a.available:hover {
-    background-color: rgb(50, 100, 50);
-}    
-
-.not_available {
-    color: #fdd;
-    background-color: rgb(100, 10, 10);
-    border: 1px solid rgb(150, 50, 50);                
-}
-a.not_available:hover {
-    background-color: rgb(150, 50, 50);
+a.available:hover {    
+    filter: brightness(80%);
 }
 
-.empty_slot {                
+.booked {    /* Booked by current user */      
+    color: var(--bs-info-color);
+    background: var(--bs-info);
+    border: 1px solid var(--bs-info-border-subtle);
+}
+a.booked:hover {    
+    filter: brightness(80%);
+}
+
+.not-available {  
+    color: var(--bs-secondary-color);
+    background-color: var(--bs-secondary);
+    border: 1px solid var(--bs-dark);    
+}
+
+.weekly {    /* Weekly */      
+    color: var(--bs-success-color);
+    background: var(--bs-primary);
+    border: 1px solid var(--bs-success);
+}
+a.weekly:hover {    
+    filter: brightness(80%);
+}
+
+.onceoff {    /* Once Off */      
+    color: var(--bs-warning-color);
+    background: var(--bs-warning);
+    border: 1px solid var(--bs-danger);
+}
+a.onceoff:hover {    
+    filter: brightness(80%);
+}
+
+/*
+a.not-available:hover {
+    filter: brightness(80%);
+}
+*/    
+
+.empty-slot {                
     min-width: var(--col_width);                  
     border: 1px solid var(--grid_line_colour);                
     box-sizing: border-box;               
     height: calc(30 * var(--px_per_min) - 1px);
     position: absolute;             
-}          
+}        
 
-a.empty_slot:hover {
+a.empty-slot:hover {    
     background: #ddd;
 }
 

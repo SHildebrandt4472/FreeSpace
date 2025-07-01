@@ -7,9 +7,9 @@ from app.models import WorkSpace
 #Forms for editing users
 
 class WorkspaceEditForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()], render_kw={"placeholder": "Enter Name"})
+    description = StringField('Description', validators=[DataRequired()], render_kw={"placeholder": "Enter Description"})
     status = SelectField('Status', choices=WorkSpace.status_choices,coerce=int, validators=[DataRequired()])
-    location = StringField('Location')
+    location = StringField('Location', render_kw={"placeholder": "Enter Location"})
     thumbnail = FileField("Image",  validators=[FileAllowed(['jpg', 'png'],  'Allowed file types are jpg, png')])    
     submit = SubmitField('Save')      

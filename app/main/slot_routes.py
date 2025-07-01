@@ -35,7 +35,7 @@ def new_slot(workspace_id, start_time):
    form.hour.data = slot.start_time.hour
    form.minute.data = slot.start_time.minute
    form.duration.data = slot.duration
-   form.description.data = slot.description
+   #form.description.data = slot.description
    form.repeating.data = slot.repeating
    action = url_for('.add_slot', workspace_id=workspace.id)
    return render_template('edit_slot.html', title=title, action=action, form=form, slot=slot)
@@ -57,7 +57,7 @@ def add_slot(workspace_id):
         day = dt.datetime.strptime(form.day.data, "%Y-%m-%d")
         slot.start_time = dt.datetime.combine(day, dt.time(form.hour.data, form.minute.data))
         slot.duration = form.duration.data
-        slot.description = form.description.data
+        #slot.description = form.description.data
         slot.repeating = form.repeating.data
         
         workspace.slots.append(slot)
@@ -82,7 +82,7 @@ def edit_slot(id):
    form.hour.data = slot.start_time.hour
    form.minute.data = slot.start_time.minute
    form.duration.data = slot.duration
-   form.description.data = slot.description
+   #form.description.data = slot.description
    form.repeating.data = slot.repeating
    action = url_for('.update_slot', id=slot.id)
    return render_template('edit_slot.html', title=title, form=form, action=action, slot=slot)
@@ -102,7 +102,7 @@ def update_slot(id):
         day = dt.datetime.strptime(form.day.data, "%Y-%m-%d")
         slot.start_time = dt.datetime.combine(day, dt.time(form.hour.data, form.minute.data))
         slot.duration = form.duration.data
-        slot.description = form.description.data
+        #slot.description = form.description.data
         slot.repeating = form.repeating.data   
         db.session.commit()
         flash('Your changes have been saved.')

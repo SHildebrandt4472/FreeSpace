@@ -1,0 +1,17 @@
+
+
+{% if slot.user_id == current_user.id or slot.is_available() %}
+  <a class="{{ h.class_for_booking(slot,current_user) }}" href="{{ url_for('.booking', id=slot.id) }}">
+{% else %}
+  <a class="{{ h.class_for_booking(slot,current_user) }}">
+{% endif %}
+
+{% if slot.duration > 20 %}
+  <span class="status_str">{{ slot.booking_status_str(current_user) }}</span>    
+{% endif %}   
+
+{% if slot.duration > 40 %}
+  <br>
+  {{ slot.start_time.strftime("%H:%M")}} {{ slot.duration }} mins
+{% endif %} 
+</a>
