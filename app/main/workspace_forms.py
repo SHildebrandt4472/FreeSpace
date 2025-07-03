@@ -12,4 +12,5 @@ class WorkspaceEditForm(FlaskForm):
     status = SelectField('Status', choices=WorkSpace.status_choices,coerce=int, validators=[DataRequired()])
     location = StringField('Location', render_kw={"placeholder": "Enter Location"})
     thumbnail = FileField("Image",  validators=[FileAllowed(['jpg', 'png'],  'Allowed file types are jpg, png')])    
-    submit = SubmitField('Save')      
+    submit = SubmitField('Save')  
+    cancel = SubmitField('Cancel')    

@@ -42,10 +42,11 @@ def show_workspace(id,day):
          daily_slots[dow]['slots'].append(slot)   
 
    edit_slots = current_user.is_admin() and request.args.get('edit')
+   edit_slots_url = url_for('.show_workspace',id=id, day=day, edit=1)
    next_url = url_for('.show_workspace',id=id, day=end_date)
    prev_url = url_for('.show_workspace',id=id, day=start_date-datetime.timedelta(days=1))
    session['back_to'] = url_for('.show_workspace', id=id, date=day)#slot.start_time.date())
-   return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url, edit_slots=edit_slots)
+   return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url, edit_slots=edit_slots, edit_slots_url=edit_slots_url, day=day)
 
 @bp.route('/workspace/new', defaults={'id':None})
 @bp.route('/workspace/<id>/edit')
@@ -68,7 +69,7 @@ def edit_workspace(id):
    form.location.data = workspace.location
    form.status.data = workspace.status
    action = url_for('.update_workspace',id=workspace.id)
-   return render_template('edit_workspace.html', title=title, action=action, form=form)
+   return render_template('edit_workspace.html', title=title, action=action, form=form, workspace=workspace)
    
    
 
@@ -88,6 +89,7 @@ def update_workspace(id):
 
    form = WorkspaceEditForm()
    if form.validate_on_submit():
+      if form.submit.data:   
          workspace.name = form.name.data
          workspace.description = form.description.data
          workspace.location = form.location.data
@@ -106,8 +108,8 @@ def update_workspace(id):
             db.session.commit() # save thumbnail name
     
          flash('Your changes have been saved.')
-         return redirect(url_for('.show_workspace', id=workspace.id))
-   return render_template('edit_workspace.html', title=title, form=form)
+      return redirect(url_for('.show_workspace', id=workspace.id))
+   return render_template('edit_workspace.html', title=title, form=form, workspace=workspace)
 
 @bp.route('/workspace/<id>/delete', methods=['POST'])
 @login_required

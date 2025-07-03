@@ -1,0 +1,103 @@
+ul.booking-list {
+    display:block;    
+    list-style-type: none;    
+    overflow: hidden;
+    padding: 5px;
+  }
+
+  ul.booking-list li {
+    float: left;
+    margin: 10px;     /* Space between tiles */    
+    border-radius: 10px;
+  }
+  
+  ul.booking-list li a {    
+    width: 400px;
+    display: inline-block;
+    text-decoration: none;
+    outline: 0;
+    border-radius: 10px;    
+    border:1px solid #666;
+    background: var(--bs-secondary); /*#aaa;*/ 
+    padding-bottom: 10px;  
+  }
+
+  ul.booking-list img {
+    border: none;
+    display: inline-block;
+    max-width: 70px;  
+  }
+  
+  ul.booking-list li a:hover {
+    box-shadow: 0px 0px 10px var(--bs-secondary-color);    
+  }
+
+  ul.booking-list div.img-col {
+
+    background: #f92;
+    background: var(--bs-info); /*#fd3;*/
+    
+    
+    
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    vertical-align: middle;
+  }
+
+  ul.booking-list div.img-col img {
+
+      margin: auto;
+  }
+
+  ul.booking-list div.info-col {
+    padding-left: 20px;
+  
+   
+    color: var(--bs-secondary-color);
+  }
+
+  ul.booking-list div.name {
+    /* border: 1px solid #ff0; */
+    display:inline-block;
+    padding-bottom: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--bs-secondary-color);
+    text-align: center;
+    padding-left: 20px;
+  }
+
+  ul.booking-list div.day {
+    /*border: 1px solid #ff0; */
+    display:inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+         
+    text-align: center;
+    
+    }
+
+  .approved-1 {
+    color: var(--bs-success);
+  }
+  .approved-0 {
+      color: var(--bs-warning);
+}
+
+
+
+  ul.booking-list .one-line {
+    max-height: 25px; 
+    overflow:hidden;
+  }   
+
+  ul.booking-list .status1 {
+    color: var(--bs-success);
+  }
+  ul.booking-list .status2 {
+    color: var(--bs-warning);
+  }
+  
+  

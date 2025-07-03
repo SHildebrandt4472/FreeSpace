@@ -16,8 +16,13 @@ def home():  # Main home page
     
     today = datetime.date.today()
     bookings = current_user.bookings.filter(Slot.start_time >= today)
+    previous_bookings = current_user.bookings.filter(Slot.start_time < today)
+    previous_workspaces = []
+    for booking in previous_bookings:
+        if booking.workspace_id not in [ws.id for ws in previous_workspaces]:
+            previous_workspaces.append(booking.workspace)
 
     session['back_to'] = url_for('.home')
-    
-    return render_template('index.html',bookings=bookings, page='MyBookings') 
+
+    return render_template('index.html',bookings=bookings, previous_workspaces=previous_workspaces, page='MyBookings')
 

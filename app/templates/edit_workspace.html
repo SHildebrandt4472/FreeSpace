@@ -21,17 +21,19 @@
           {% include "_form_field_select.html" %}
         {% endwith %} 
 
-            <p>
-              {{ form.thumbnail.label }}<br>
-              {{ form.thumbnail() }}<br>
-              {% for error in form.thumbnail.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-              {% endfor %}
-            </p>  
+        {% with field = form.thumbnail %}  
+          {% include "_form_field_file.html" %}
+        {% endwith %} 
 
-          {% with field = form.submit %}  
-            {% include "_form_field_submit.html" %}
-          {% endwith %} 
+        <div class="mt-3 mb-2">
+            {{ form.submit(class_="btn btn-primary") }}
+            {{ form.cancel(class_="btn btn-primary") }}
+            <form action="{{ url_for('.delete_workspace', id=workspace.id) }}" method="POST">
+              <input class="delete btn btn-danger float-end" type="submit" value="Delete Workspace" onclick="return confirm('Delete Workspace {{workspace.name}}\nAre You Sure?')">
+            </form>
+        </div>
+
+        
     </form>
   </div>
 

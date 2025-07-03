@@ -28,4 +28,10 @@
   padding-bottom: 0;
 }
 
+.workspace-status1 {
+    color: var(--bs-success);
+}
+.workspace-status2 {
+    color: var(--bs-warning);
+}
   

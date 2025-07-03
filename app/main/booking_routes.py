@@ -45,7 +45,7 @@ def unbook(id):
    slot.approved = 0
    slot.approved_by_id = None
    db.session.commit()
-   return redirect(url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
+   return redirect(session['back_to'] or url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
 
 
 @bp.route('/booking/<id>/approve',methods=['POST'])

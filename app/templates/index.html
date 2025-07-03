@@ -1,19 +1,35 @@
 {% extends "base.html" %}
 
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='booking_list.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='workspace_list.css') }}">
+{% endblock %}
+
 {% block content %}
-
   <h2>Current Bookings</h2>
-  {% if bookings.count() > 0 %}
-    {% for booking in bookings %}
-      <div class="booking">
-        {{booking.workspace.name}} {{booking.start_time.date()}} {{booking.start_time.time()}} <a href="{{url_for('.booking', id=booking.id)}}">Edit</a>
-      </div>
-    {% endfor %}
-  {% else %}
-    <div>You currently have no bookings coming up</div>  
-  {% endif %}    
-
-
+  <div>
+    {% if bookings.count() > 0 %}
+      <ul class="booking-list">
+        {% for booking in bookings %}
+          {% include '_booking_panel.html' %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="text-warning">You currently have no bookings coming up</div>
+    {% endif %}
+  </div>
+  <h2>Previous Workspaces</h2>
+  <div>
+    {% if previous_workspaces %}
+      <ul class="workspaces">
+        {% for workspace in previous_workspaces %}
+          {% include '_workspace_panel.html' %}
+        {% endfor %}
+      </ul> 
+    {% else %}
+      <div class="text-warning">You have no previous workspaces</div>
+    {% endif %}
+  </div>
 {% endblock %}
 
 

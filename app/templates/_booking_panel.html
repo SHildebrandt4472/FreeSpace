@@ -1,0 +1,18 @@
+<li>
+  <a href="{{ url_for('.booking', id=booking.id)}}">
+    <div class="img-col">
+      {% if booking.workspace.thumbnail %}
+        <img src="{{ url_for('static', filename='thumbnails/' + booking.workspace.thumbnail) }}">
+      {% else %}
+        <img src="{{ url_for('static', filename='icons/unknown.png') }}">
+      {% endif %}
+      <div class="name">{{ booking.workspace.name }}</div>
+    </div>
+    <div class="info-col">
+      <div class="day">{{ booking.start_time.strftime('%A, %d %B %Y %H:%M') }}</div>
+      <div class="one-line">Status: <span class="approved-{{ booking.approved }}">{{ booking.approved_str() }}</span></div>
+      <div class="one-line">Duration: {{ booking.duration }} min</div>
+      <div class="one-line">Description: {{ booking.description }}</div>
+    </div>
+  </a>
+</li>

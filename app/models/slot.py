@@ -43,6 +43,11 @@ class Slot(db.Model):
     if self.repeating: 
       return "Weekly"        
     return "Onceoff"
+  
+  def approved_str(self):
+    if self.approved:
+      return "Approved"
+    return "Pending Approval"
 
   
   def is_booked(self):
