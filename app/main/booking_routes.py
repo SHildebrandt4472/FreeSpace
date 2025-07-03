@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request, abort, ses
 
 from flask_login import current_user, login_required #, login_user, logout_user #, login_required
 #from urllib.parse import urlparse
-from app.models import db, Slot #, WorkSpace
+from app.models import db, Slot, WorkSpace
 from app.main import bp
 import datetime
 from sqlalchemy import and_
@@ -50,7 +50,7 @@ def unbook(id):
 
 @bp.route('/booking/<id>/approve',methods=['POST'])
 @login_required
-def approve_slot(id):
+def approve_booking(id):
    if not current_user.is_manager():
       abort(403)
 
@@ -69,7 +69,17 @@ def unapproved_bookings():
    if not current_user.is_manager():
       abort(403)
 
-   today = datetime.date.today()
-   slots = Slot.query.filter(and_(Slot.start_time >= today, Slot.user_id > 0, Slot.approved == 0))
-   return render_template('approve_slots.html',slots=slots)
+   workspaces = WorkSpace.query.order_by('name').all()  
+
+   # remove bookings that have already been approved
+   spaces = []
+   for workspace in workspaces:
+      workspace.bookings = workspace.bookings.filter_by(approved=0)
+      if workspace.bookings.first(): # Only include if has atleast one booking
+         spaces.append(workspace)
+      
+   #today = datetime.date.today()
+   #slots = Slot.query.filter(and_(Slot.start_time >= today, Slot.user_id > 0, Slot.approved == 0))
+   session['back_to'] = url_for('.unapproved_bookings')
+   return render_template('bookings_approve.html', workspaces=spaces)
 

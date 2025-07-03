@@ -3,6 +3,10 @@
 {% block content %}
   <div class="col-sm-8 border border-1 p-3 rounded bg-secondary mt-4">
     <h1>{{ title }}</h1>
+    {% if workspace.id %}
+      <form id="deleteform" action="{{ url_for('.delete_workspace', id=workspace.id) }}" method="POST"></form>
+    {% endif %}  
+
     <form class="settings" action="{{action}}" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {% with field = form.name %}  
@@ -26,11 +30,16 @@
         {% endwith %} 
 
         <div class="mt-3 mb-2">
-            {{ form.submit(class_="btn btn-primary") }}
-            {{ form.cancel(class_="btn btn-primary") }}
-            <form action="{{ url_for('.delete_workspace', id=workspace.id) }}" method="POST">
-              <input class="delete btn btn-danger float-end" type="submit" value="Delete Workspace" onclick="return confirm('Delete Workspace {{workspace.name}}\nAre You Sure?')">
-            </form>
+          {{ form.submit(class_="btn btn-primary") }}
+
+          {% if back_to %}
+            <a href="{{ back_to }}" class="btn btn-primary">Cancel</a>
+          {% endif %}
+
+          {% if workspace.id %}            
+            <input form="deleteform" class="delete btn btn-danger float-end" type="submit" value="Delete Workspace" onclick="return confirm('Delete Workspace {{workspace.name}}\nAre You Sure?')">            
+          {% endif %}
+
         </div>
 
         

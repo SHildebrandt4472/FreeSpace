@@ -34,4 +34,26 @@
 .workspace-status2 {
     color: var(--bs-warning);
 }
-  
+
+
+input[type="file"]::file-selector-button {
+    background-color: var(--bs-primary);
+    color: var(--bs-white);        
+}
+
+th.useraccess-10 {
+  background-color: var(--bs-primary);
+}
+
+th.useraccess-20 {
+  background-color: var(--bs-info);
+}
+
+th.useraccess-30 {
+  background-color: var(--bs-warning);
+}
+
+th.useraccess-40 {
+  background-color: var(--bs-danger);
+}
+

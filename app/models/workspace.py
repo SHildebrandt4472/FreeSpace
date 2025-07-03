@@ -1,7 +1,8 @@
 
 from app.models import db
 from datetime import datetime
-
+from sqlalchemy import and_
+from app.models.slot import Slot
 
 
 class WorkSpace(db.Model):
@@ -25,6 +26,9 @@ class WorkSpace(db.Model):
   created_at = db.Column(db.DateTime, default=db.func.datetime('now')) 
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
   slots = db.relationship('Slot', backref='workspace', lazy='dynamic')
+  bookings = db.relationship('Slot', 
+                             primaryjoin=and_(Slot.workspace_id == id, Slot.start_time > db.func.datetime('now'), Slot.user_id != None), 
+                             lazy='dynamic')
 
   def __repr__(self):
     return f"<WorkSpace {self.id}: {self.name}>"

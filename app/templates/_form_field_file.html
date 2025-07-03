@@ -1,6 +1,6 @@
 <div class="mb-2">
   {{ field.label(class_="form-label ") }}    
-  {{ field(class_="form-control " + h.include_if(field.errors, "is-invalid")) }}
+  {{ field(class_="form-control" + h.include_if(field.errors, "is-invalid")) }}
 
   {% for error in field.errors %}  
     <div id="{{field.id}}Feedback" class="invalid-feedback">

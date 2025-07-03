@@ -21,6 +21,13 @@ ACCESS_STRS = {
   ACCESS['admin']     : "Admin",
 }
 
+ACCESS_ICONS = {  
+  ACCESS['student']   : "👨‍🎓",
+  ACCESS['staff']     : "👨‍🏫",
+  ACCESS['manager']   : "👷",
+  ACCESS['admin']     : "👮",
+}
+
 class User(UserMixin, db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(32), index=True, unique=True)
@@ -66,6 +73,16 @@ class User(UserMixin, db.Model):
     if self.access in ACCESS_STRS:
       return ACCESS_STRS[self.access]
     return "Unknown"
+  
+  def icon(self):
+    if self.access in ACCESS_ICONS:
+      return ACCESS_ICONS[self.access]
+    return ""
+  
+  def class_str(self):
+    if self.access in ACCESS_ICONS:
+      return ACCESS_ICONS[self.access]
+    return ""
 
   def update_last_seen(self):
     last_seen = self.last_seen if self.last_seen else datetime.fromtimestamp(0)

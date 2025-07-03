@@ -14,8 +14,8 @@ import os
 @bp.route('/workspaces')
 @login_required
 def workspaces():  # Main home page:
-    workspaces = WorkSpace.query.all()
-
+    workspaces = WorkSpace.query.order_by('name').all()
+    session['back_to'] = url_for('.workspaces')
     return render_template('workspaces.html',spaces = workspaces, page='Workspaces')
 
 @bp.route('/workspace/<id>', defaults = {'day':None} )
@@ -45,7 +45,7 @@ def show_workspace(id,day):
    edit_slots_url = url_for('.show_workspace',id=id, day=day, edit=1)
    next_url = url_for('.show_workspace',id=id, day=end_date)
    prev_url = url_for('.show_workspace',id=id, day=start_date-datetime.timedelta(days=1))
-   session['back_to'] = url_for('.show_workspace', id=id, date=day)#slot.start_time.date())
+   session['back_to'] = url_for('.show_workspace', id=id, date=day)
    return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url, edit_slots=edit_slots, edit_slots_url=edit_slots_url, day=day)
 
 @bp.route('/workspace/new', defaults={'id':None})
@@ -69,9 +69,8 @@ def edit_workspace(id):
    form.location.data = workspace.location
    form.status.data = workspace.status
    action = url_for('.update_workspace',id=workspace.id)
-   return render_template('edit_workspace.html', title=title, action=action, form=form, workspace=workspace)
-   
-   
+   back_to = session.get('back_to', None)
+   return render_template('edit_workspace.html', title=title, action=action, form=form, workspace=workspace, back_to=back_to)
 
 @bp.route('/workspace/add', methods=['POST'], defaults={'id':None})
 @bp.route('/workspace/<id>/update', methods=['POST'])
@@ -87,27 +86,26 @@ def update_workspace(id):
       workspace = WorkSpace()
       title = "New workspace"
 
-   form = WorkspaceEditForm()
-   if form.validate_on_submit():
-      if form.submit.data:   
-         workspace.name = form.name.data
-         workspace.description = form.description.data
-         workspace.location = form.location.data
-         workspace.status = form.status.data
+   form = WorkspaceEditForm()   
+   if form.validate_on_submit():      
+      workspace.name = form.name.data
+      workspace.description = form.description.data
+      workspace.location = form.location.data
+      workspace.status = form.status.data
 
-         if not workspace.id:
-            db.session.add(workspace)
-         db.session.commit()
+      if not workspace.id:
+         db.session.add(workspace)
+      db.session.commit()
 
-         # Handle Thumbnail files 
-         thumbnail = form.thumbnail.data         
-         if thumbnail and thumbnail.filename != '':
-            file_ext = os.path.splitext(thumbnail.filename)[1]            
-            workspace.thumbnail = f"workspace_{workspace.id}{file_ext}"
-            thumbnail.save(os.path.join(current_app.static_folder, 'thumbnails', workspace.thumbnail))            
-            db.session.commit() # save thumbnail name
+      # Handle Thumbnail files 
+      thumbnail = form.thumbnail.data         
+      if thumbnail and thumbnail.filename != '':
+         file_ext = os.path.splitext(thumbnail.filename)[1]            
+         workspace.thumbnail = f"workspace_{workspace.id}{file_ext}"
+         thumbnail.save(os.path.join(current_app.static_folder, 'thumbnails', workspace.thumbnail))            
+         db.session.commit() # save thumbnail name
     
-         flash('Your changes have been saved.')
+      flash('Your changes have been saved.')
       return redirect(url_for('.show_workspace', id=workspace.id))
    return render_template('edit_workspace.html', title=title, form=form, workspace=workspace)
 

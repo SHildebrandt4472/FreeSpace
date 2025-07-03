@@ -4,24 +4,27 @@
 
   <h2>Users</h2>
 
-  <table>
+  <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Access</th>
+            <th scope="col" width="110px" ></th>            
+            <th scope="col" class="table-secondary">Username</th>
+            <th scope="col" class="table-secondary">Name</th>
+            <th scope="col" class="table-secondary">Email</th>            
+            <th scope="col" class="table-secondary">Last Seen</th>            
+            <th scope="col" class="table-secondary"></th>
         </tr>
-    </thead>
-  
+    </thead>  
 
   {% for user in users %}
-  <tr>
-    <td>{{user.display_name}}</td>
-    <td>{{user.username}}</td>
-    <td>{{user.email}}</td>
-    <td>{{user.access_str()}}</td>
-    <td><a href="{{url_for('.show_user',id = user.id)}}">Details</a></td>
+  <tr>        
+    
+    <th scope="row" class="useraccess-{{user.access}}">{{ user.icon() }} {{user.access_str()}}</th>
+    <td>{{ user.username }}</td>
+    <td>{{user.display_name }}</td>
+    <td><a href="mailto://{{user.email}}">{{user.email}}</a> </td>    
+    <td><a title="{{ h.fmt_datetime(user.last_seen) }}">{{ h.fmt_sincenow(user.last_seen) }}</a></td>    
+    <td><a href="{{ url_for('.show_user',id = user.id) }}">Show</a></td>
   </tr>
   {% endfor %}
 

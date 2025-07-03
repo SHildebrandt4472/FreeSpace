@@ -40,10 +40,22 @@ def html_datetime(dt):
     return ''
   return dt.strftime('%Y-%m-%dT%H:%M')
 
-def fmt_date(dt):
+def fmt_date(dt, fmt_str="%d %b %y"):
   if not isinstance(dt, datetime.datetime):
     return ''
-  return dt.strftime("%d %b %y")
+  return dt.strftime(fmt_str)
+
+def fmt_time(dt, fmt_str="%H:%M"):
+  if not isinstance(dt, datetime.datetime):
+    return ''
+  return dt.strftime(fmt_str)
+
+
+def fmt_datetime(dt, fmt_str="%d %b %y %H:%M"):
+  if not isinstance(dt, datetime.datetime):
+    return ''
+  return dt.strftime(fmt_str)
+
 
 def fmt_date_daysuntil(date):
   if not isinstance(date, datetime.datetime):
@@ -67,6 +79,43 @@ def fmt_date_daysuntil(date):
     return 'Tomorrow'
   
   return f"{days} {days_str}"
+
+def fmt_sincenow(dt, min_minutes=None):
+  if not isinstance(dt, datetime.datetime):
+    return ''
+
+  try:
+    diff = datetime.datetime.now() - dt
+    mins = int(diff.total_seconds() / 60)
+  except Exception as e:    
+    return('')
+
+  if mins < 0:                                    # just in case future date passed
+    return dt.strftime("%d %b %Y, %H:%M:%S")
+  if min_minutes and mins < min_minutes:
+    return f"< {min_minutes} minutes ago"
+  if mins == 0:
+    return "< 1 minute ago"
+  if mins < 120:                  # < 2 hours
+    units = pluralise('minute', mins)
+    return f"{mins} {units} ago"
+  if mins < (2*1440):             # < 2 days
+    hours = int(mins / 60)
+    return f"{hours} hours ago"
+  if mins < (14*1440):            # < 2 weeks
+    days = int(mins / 1440)
+    return f"{days} days ago"
+  if mins < (60*1440):            # < 2 months
+    weeks = int(mins / (7*1440))
+    return f"{weeks} weeks ago"
+  if mins < (730*1440):           # < 2 years
+    months = int(mins / (30*1440))
+    return f"{months} months ago"
+  years = int(mins / (365.25*1440))
+  if years < 20:
+    return f"{years} years ago"
+  return ''
+
 
 def class_for_slot(slot):
   cls = "slot"

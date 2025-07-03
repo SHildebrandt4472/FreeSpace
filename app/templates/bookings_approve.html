@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h2>Bookings to be approved</h2>
+
+  {% for workspace in workspaces %}
+    <h3 class="bg-dark">
+        {% if workspace.thumbnail %}
+        <img src="{{ url_for('static', filename='thumbnails/' + workspace.thumbnail) }}" height="60px">
+      {% else %}
+        <img src="{{ url_for('static', filename='icons/unknown.png') }}">
+      {% endif %}
+      
+      {{ workspace.name }}
+    </h3>
+    <ul>
+      {% for booking in workspace.bookings %}
+        <li>        
+          {{ h.fmt_date(booking.start_time,"%A %d %b") }} |  {{ h.fmt_time(booking.start_time) }} - {{booking.user.display_name}} 
+          {{h.post_to('Approve', '.approve_booking', id=booking.id) |safe}}
+
+        </li> 
+      {% endfor %}
+    </ul>
+  {% endfor %}
+
+{% endblock %}
+
