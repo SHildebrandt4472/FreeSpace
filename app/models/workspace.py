@@ -4,6 +4,10 @@ from datetime import datetime
 from sqlalchemy import and_
 from app.models.slot import Slot
 
+workspace_skill_table = db.Table('workspace_skill',
+  db.Column('workspace_id', db.Integer, db.ForeignKey('work_space.id', ondelete='CASCADE'), primary_key=True),
+  db.Column('skill_id', db.Integer, db.ForeignKey('skill.id', ondelete='CASCADE'), primary_key=True)
+)
 
 class WorkSpace(db.Model):
   STS_IN_SERVICE = 1
@@ -15,7 +19,7 @@ class WorkSpace(db.Model):
   }
 
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(32), index=True, unique=True)
+  name = db.Column(db.String(15), index=True, unique=True)
   description = db.Column(db.Text)  
 
   location = db.Column(db.String(32))
@@ -29,6 +33,8 @@ class WorkSpace(db.Model):
   bookings = db.relationship('Slot', 
                              primaryjoin=and_(Slot.workspace_id == id, Slot.start_time > db.func.datetime('now'), Slot.user_id != None), 
                              lazy='dynamic')
+  
+  required_skills = db.relationship('Skill', secondary=workspace_skill_table, backref='workspaces')
 
   def __repr__(self):
     return f"<WorkSpace {self.id}: {self.name}>"
@@ -43,3 +49,9 @@ class WorkSpace(db.Model):
     for status in WorkSpace.STS_STRINGS:
       choices.append((status,WorkSpace.STS_STRINGS[status]))
     return choices
+  
+  def requires_skill(self, required_skill):
+    for skill in self.required_skills:       
+      if skill.id == required_skill.id:
+        return True
+    return False

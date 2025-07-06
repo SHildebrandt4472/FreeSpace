@@ -12,7 +12,7 @@
   <div class="row">
     <!-- Sidebar -->
     <aside class="col-md-3 mb-4">
-      <div class="bg-dark p-3 rounded shadow-sm">
+      <div class="bg-dark p-3 rounded shadow-sm overflow-hidden">
         <h4 class="mb-3 text-center text-info">{{workspace.name}}</h4>
         <div class="row">
           {% if workspace.thumbnail %}
@@ -20,18 +20,36 @@
           {% endif %}  
         </div>  
        
-          <div class="text-info">Name:</div>
+          <div class="text-info">Name</div>
           <div class="ps-2">{{workspace.name}}</div>
 
-          <div class="text-info">Description:</div>
-          <div class="ps-2">{{workspace.description}}</div>
+          <div class="text-info">Description</div>
+          <div class="ps-2 one-line">{{workspace.description}}</div>
 
-          <div class="text-info">Location:</div>
-          <div class="ps-2">{{workspace.location}}</div>
+          <div class="text-info">Location</div>
+          <div class="ps-2 one-line">{{workspace.location}}</div>
 
-          <div class="text-info">Status:</div>
-          <div class="workspace-status{{workspace.status}} ps-2">{{workspace.status_str()}}</div>
-
+          <div class="text-info">Status</div>
+          <div class="workspace-status{{workspace.status}} ps-2 one-line">
+            {{workspace.status_str()}}
+          </div>
+                    
+          <div class="text-info">Required Skills</div>
+          {% if workspace.required_skills %}                        
+            {% for skill in workspace.required_skills %}
+              <div class="ps-2 one-line">
+                {{ h.include_if(current_user.has_skill(skill), "✔", "❌") }} {{ skill.description }} 
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="ps-2">No skills required</div>                
+          {% endif %}
+       
+        <div class="row mt-2">
+        {% if current_user.is_manager() %}  
+          {{h.button_to('Edit Skills', '.edit_workspace_skills', id=workspace.id) | safe}}
+        {% endif %}
+        </div>
         
         {% if current_user.is_admin() %}
           <div class="row mt-2">

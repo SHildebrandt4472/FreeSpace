@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request, abort #,se
 
 from flask_login import current_user, login_required #, login_user, logout_user #, login_required
 #from urllib.parse import urlparse
-from app.models import db, User
+from app.models import db, User, Skill
 from app.main import bp
 #import datetime
 #from sqlalchemy import text
@@ -102,3 +102,42 @@ def change_password():
         flash('Your password has been updated.')
         return redirect(url_for('.home'))        
     return render_template('user_change_password.html', title='Change Password', form=form)
+
+@bp.route('/user/<user_id>/edit_skills')
+@login_required
+def edit_user_skills(user_id):
+  if not current_user.is_manager():
+    abort(403)
+
+  user = User.query.get_or_404(user_id)
+  all_skills = Skill.query.all()
+
+  return render_template('user_edit_skills.html', title=f'Edit Skills for {user.name()}', user=user, all_skills=all_skills)
+
+@bp.route('/user/<user_id>/add_skill/<skill_id>', methods=['POST'])
+@login_required
+def add_user_skill(user_id, skill_id):
+  if not current_user.is_manager():
+    abort(403)
+
+  user = User.query.get_or_404(user_id)
+  skill = Skill.query.get_or_404(skill_id)
+  if not user.has_skill(skill):
+    user.skills.append(skill)
+    db.session.commit()
+  
+  return redirect(url_for('.edit_user_skills', user_id = user.id))       
+
+@bp.route('/user/<user_id>/remove_skill/<skill_id>', methods=['POST'])
+@login_required
+def remove_user_skill(user_id, skill_id):
+  if not current_user.is_manager():
+    abort(403)
+
+  user = User.query.get_or_404(user_id)
+  skill = Skill.query.get_or_404(skill_id)
+  if user.has_skill(skill):
+    user.skills.remove(skill)
+    db.session.commit()
+  
+  return redirect(url_for('.edit_user_skills', user_id = user.id))      

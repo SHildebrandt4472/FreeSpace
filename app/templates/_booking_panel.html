@@ -6,11 +6,14 @@
       {% else %}
         <img src="{{ url_for('static', filename='icons/unknown.png') }}">
       {% endif %}
-      <div class="name">{{ booking.workspace.name }}</div>
+      <div class="name">{{ booking.workspace.name[:15] }}</div>
+      
     </div>
     <div class="info-col">
-      <div class="day">{{ booking.start_time.strftime('%A, %d %B %Y %H:%M') }}</div>
-      <div class="one-line">Status: <span class="approved-{{ booking.approved }}">{{ booking.approved_str() }}</span></div>
+      <span class="approved-pill-{{ booking.approved }} rounded-pill float-end">{{ booking.approved_str() }}</span>
+      <div class="day">{{ h.fmt_time(booking.start_time,'%A %H:%M') }}</div>
+      <div class="date">{{ h.fmt_time(booking.start_time,'%d %B %Y') }}</div>      
+        
       <div class="one-line">Duration: {{ booking.duration }} min</div>
       <div class="one-line">Description: {{ booking.description }}</div>
     </div>

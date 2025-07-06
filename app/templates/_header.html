@@ -1,7 +1,7 @@
 
 
 
-<nav class="navbar navbar-expand-sm bg-primary" data-bs-theme="dark">  
+<nav class="navbar navbar-expand-sm bg-primary mb-4" data-bs-theme="dark">  
   <div class="container-fluid">        
      <div class="navbar-brand">  
       <img src="{{ url_for('static', filename='icons/logo.svg') }}" height="35px">    
@@ -32,6 +32,7 @@
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="{{ url_for('main.unapproved_bookings') }}">Approvals</a>
                 <a class="dropdown-item" href="{{ url_for('main.weekly_slots') }}">Booking Slots</a>             
+                <a class="dropdown-item" href="{{ url_for('main.skills') }}">Skills</a>             
                 
                 {% if current_user.is_admin() %}
                   <div class="dropdown-divider"></div>

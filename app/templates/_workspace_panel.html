@@ -1,15 +1,15 @@
 <li>
     <a href="{{ url_for('.show_workspace', id=workspace.id)}}">
       <div class="img-col">
-      {% if workspace.thumbnail %}                
-            <img src="{{ url_for('static', filename='thumbnails/'+workspace.thumbnail) }}">
-      {% else %}
-        <img src="{{ url_for('static', filename='icons/unknown.png') }}">
-      {% endif %}  
-
+        {% if workspace.thumbnail %}                
+          <img src="{{ url_for('static', filename='thumbnails/'+workspace.thumbnail) }}">
+        {% else %}
+          <img src="{{ url_for('static', filename='icons/unknown.png') }}">
+        {% endif %} 
       </div>
-        <div class="info-col">
-          <div class="name">{{ workspace.name }}</div>
+
+      <div class="info-col">
+        <div class="name">{{ workspace.name }}</div>
         <div class="one-line">{{ workspace.description }}</div>
         <div class="one-line">{{ workspace.location }}</div>
         <div class="status{{workspace.status}}">{{ workspace.status_str() }}</div>		            

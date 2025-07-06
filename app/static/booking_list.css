@@ -12,7 +12,7 @@ ul.booking-list {
   }
   
   ul.booking-list li a {    
-    width: 400px;
+    width: 340px;
     display: inline-block;
     text-decoration: none;
     outline: 0;
@@ -33,12 +33,8 @@ ul.booking-list {
   }
 
   ul.booking-list div.img-col {
-
     background: #f92;
-    background: var(--bs-info); /*#fd3;*/
-    
-    
-    
+    background: var(--bs-info); /*#fd3;*/    
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     vertical-align: middle;
@@ -69,23 +65,53 @@ ul.booking-list {
 
   ul.booking-list div.day {
     /*border: 1px solid #ff0; */
-    display:inline-block;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    /*display:inline-block;*/
+    padding-top: 10px;    
     font-size: 20px;
-    font-weight: bold;
-         
-    text-align: center;
-    
-    }
+    font-weight: bold;   
+  }
+
+  ul.booking-list div.date{
+    /*border: 1px solid #ff0; */
+    /*display:inline-block;*/    
+    font-size: 18px;
+    font-weight: bold;   
+  }
 
   .approved-1 {
     color: var(--bs-success);
   }
   .approved-0 {
       color: var(--bs-warning);
-}
+  }
+  .approved-2 {
+    background: var(--bs-danger);
+    color: var(--bs-white);
+  }
 
+  .approved-pill-0 {
+    background: var(--bs-warning);
+    color: var(--bs-white);
+    padding: 2px 5px;
+    font-weight: bold;
+    margin: 8px;
+  }
+
+  .approved-pill-1 {
+    background: var(--bs-success);
+    color: var(--bs-white);
+    padding: 2px 5px;
+    font-weight: bold;
+    margin: 8px;
+  }
+
+  .approved-pill-2 {
+    background: var(--bs-danger);
+    color: var(--bs-white);
+    padding: 2px 5px;
+    font-weight: bold;
+    margin: 8px;
+  }
 
 
   ul.booking-list .one-line {

@@ -12,7 +12,7 @@
 #
 #
 #import click
-from app.models import db, User, WorkSpace, Slot
+from app.models import db, User, WorkSpace, Slot, Skill, user_skill_table, workspace_skill_table
 from app.cli import bp
 import datetime
 
@@ -22,14 +22,14 @@ def init_data():  # Preset data for testing and initial deployment
 
   User.query.delete()  
   
-  user = User(username="sam",  # Creating a new user with differents attributes
+  sam = User(username="sam",  # Creating a new user with differents attributes
               email="sam@fullsteam.net",
               display_name="Sam",
               access=40)              
-  user.set_password("train")
-  db.session.add(user)  
+  sam.set_password("train")
+  db.session.add(sam)  
   db.session.commit()
-  print("Created:", user)  
+  print("Created:", sam)  
 
   user = User(username="demo",  # Creating a new demo user with differents attributes
            email="demo@demo.com",
@@ -59,8 +59,7 @@ def init_data():  # Preset data for testing and initial deployment
   
   Slot.query.delete()
 
-  for i in range(10):
-    
+  for i in range(10):    
     today = datetime.date.today()
     MyTime = datetime.time(8, 0, 0)
     DateTime = datetime.datetime.combine(today, MyTime)  
@@ -70,6 +69,54 @@ def init_data():  # Preset data for testing and initial deployment
     db.session.add(slot)
     db.session.commit()
     print("Created:", slot)
+
+  Skill.query.delete()  
+
+  
+  db.session.query(user_skill_table).delete()
+  db.session.query(workspace_skill_table).delete()
+  db.session.commit()  
+
+  skill = Skill(description="OnGuard Safety Certificate")    
+  db.session.add(skill)
+  db.session.commit()
+  print("Created:", skill)
+
+  sam.skills.append(skill)
+  user.skills.append(skill)
+  laser_cutter.required_skills.append(skill)
+  db.session.commit()
+
+  skill = Skill(description="General Woodworking Tools Badge")
+  db.session.add(skill)    
+  db.session.commit()
+  print("Created:", skill)
+
+  sam.skills.append(skill)
+  db.session.commit()
+
+  skill = Skill(description="3D Printer Badge")
+  db.session.add(skill)
+  db.session.commit()
+  print("Created:", skill)
+
+  skill = Skill(description="Laser Cutter Badge")
+  laser_cutter.required_skills.append(skill)
+  db.session.add(skill)
+  db.session.commit()
+  print("Created:", skill)
+
+  sam.skills.append(skill)
+  db.session.commit()
+
+
+  skill = Skill(description="Circular Saw Badge")
+  db.session.add(skill)
+  db.session.commit()
+  print("Created:", skill)
+
+  print("Sam can use laser cutter:", sam.has_skills_for(laser_cutter))
+  print("User can use laser cutter:", user.has_skills_for(laser_cutter))
 
 
   # print(f"Testing Clash")

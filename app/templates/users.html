@@ -22,9 +22,9 @@
     <th scope="row" class="useraccess-{{user.access}}">{{ user.icon() }} {{user.access_str()}}</th>
     <td>{{ user.username }}</td>
     <td>{{user.display_name }}</td>
-    <td><a href="mailto://{{user.email}}">{{user.email}}</a> </td>    
+    <td><a class="link" href="mailto://{{user.email}}">{{user.email}}</a> </td>    
     <td><a title="{{ h.fmt_datetime(user.last_seen) }}">{{ h.fmt_sincenow(user.last_seen) }}</a></td>    
-    <td><a href="{{ url_for('.show_user',id = user.id) }}">Show</a></td>
+    <td><a class="link" href="{{ url_for('.show_user',id = user.id) }}">Show</a></td>
   </tr>
   {% endfor %}
 

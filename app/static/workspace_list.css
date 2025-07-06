@@ -8,11 +8,12 @@ ul.workspaces {
   ul.workspaces li {
     /* border: 1px solid green; */
     float: left;
-    margin: 10px;     /* Space between tiles */    
+    margin-right: 10px;     /* Space between tiles */        
+    margin-bottom: 10px;
     border-radius: 10px;
   }
   
-  ul.workspaces li a {    
+  ul.workspaces a {    
     width: 300px;
     height: 150px;
     display: inline-block;
@@ -21,6 +22,7 @@ ul.workspaces {
     border-radius: 10px;    
     border:1px solid #666;
     background: var(--bs-secondary); /*#aaa;*/   
+    margin-bottom: -5px;   
   }
   
   ul.workspaces img {
@@ -28,8 +30,8 @@ ul.workspaces {
     max-width: 100px;  
   }
   
-  ul.workspaces li a:hover {
-    box-shadow: 0px 0px 10px var(--bs-secondary-color);    
+  ul.workspaces li:hover { 
+    box-shadow: 0px 0px 5px var(--bs-secondary-color);    
   }
   
   ul.workspaces div.img-col {
@@ -57,6 +59,8 @@ ul.workspaces {
   
   ul.workspaces div.name {
     /* border: 1px solid #ff0; */
+    height: 50px;
+    overflow: hidden;
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 25px;
@@ -70,10 +74,11 @@ ul.workspaces {
     padding-right: 10px;
   }
 
+  /*
   ul.workspaces .one-line {
     max-height: 25px; 
     overflow:hidden;
-  }   
+  } */  
 
   ul.workspaces .status1 {
     color: var(--bs-success);

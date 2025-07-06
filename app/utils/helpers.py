@@ -168,16 +168,19 @@ def button_to(button_text, endpoint, **endpoint_opts):
   url = url_for(endpoint, **endpoint_opts)
   return button_to_url(button_text, url)    
 
-def post_to_url(link_text, url, confirm_mesg=""):  
+def post_to_url(link_text, url, confirm_mesg="", input_class=None):  
   onclick=""
   if confirm_mesg:
     onclick = f'onclick="return confirm(\'{confirm_mesg}\')"'
 
-  html = (f'<form class="postlink" action="{url}" method="post">'
-          f'  <input type="submit" class="btn btn-primary" value="{link_text}" {onclick}>'
+  if not input_class:
+    input_class = "btn btn-primary"  
+
+  html = (f'<form class="postlink d-inline-block" action="{url}" method="post">'
+          f'  <input type="submit" class="{input_class}" value="{link_text}" {onclick}>'
           f'</form>')
   return html
 
-def post_to(link_text, endpoint, confirm_mesg="", **endpoint_opts):
+def post_to(link_text, endpoint, confirm_mesg="", input_class=None, **endpoint_opts):
   url = url_for(endpoint, **endpoint_opts)
-  return post_to_url(link_text,url, confirm_mesg=confirm_mesg)
+  return post_to_url(link_text,url, confirm_mesg=confirm_mesg, input_class=input_class)

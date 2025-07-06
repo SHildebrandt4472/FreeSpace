@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+  <div class="col-sm-8 border border-1 p-3 rounded bg-secondary mt-4">      
+      <h3>Required Skills</h3>   
+      {% if workspace.required_skills %}
+        <ul class="list-group">
+            {% for skill in workspace.required_skills %}                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ✔ {{ skill.description }} {{ h.post_to('Remove', '.remove_workspace_skill', id=workspace.id, skill_id=skill.id) |safe}}
+                </li>                   
+            {% endfor %}            
+        </ul>   
+      {% else %}  
+        No Required Skills
+      {% endif %}  
+  </div>
+
+  <div class="col-sm-8 border border-1 p-3 rounded bg-secondary mt-4">      
+    <h3>Other Skills</h3>   
+    <ul class="list-group">
+      {% for skill in all_skills %}
+        {% if not workspace.requires_skill(skill) %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+              🛡 {{ skill.description }} {{ h.post_to('Add', '.add_workspace_skill', id=workspace.id, skill_id=skill.id) |safe}}
+            </li>   
+        {% endif %}  
+      {% endfor %}
+    </ul>   
+  </div>
+
+  <div class="mt-3">
+    {{ h.button_to('Back To Workspace', '.show_workspace', id=workspace.id) |safe}}
+  </div>
+    
+{% endblock %}
+

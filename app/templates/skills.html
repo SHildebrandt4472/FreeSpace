@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <script>
+    function toggle_edit(id) {
+      e = document.getElementById("skill-"+id)
+      if (e) {
+        e.classList.toggle("d-none");
+      }      
+      e = document.getElementById("skill-edit-"+id)
+      if (e) {
+        e.classList.toggle("d-none");
+      }      
+    }
+  </script>
+
+  <h2>Skills</h2>      
+
+  <ul class="list-group">
+    {% for skill in skills %}      
+      <li id="skill-{{skill.id}}" class="list-group-item d-flex justify-content-between align-items-center">        
+        🛡 {{ skill.description }} 
+        <span>
+          <a class="btn btn-primary" href="#" onclick="toggle_edit({{skill.id}})">Edit</a> 
+          {{ h.post_to('X', '.delete_skill', id=skill.id, confirm_mesg="Delete Skill: " + skill.description, input_class="btn btn-danger") |safe}}
+        </span>  
+      </li>
+
+      <li id="skill-edit-{{skill.id}}" class="list-group-item d-flex justify-content-between align-items-center d-none">
+        
+        <form action="{{ url_for('.update_skill', id=skill.id) }}" method="post" class="w-100">
+          {{ skill.form.hidden_tag() }}
+          <div class="input-group">
+            🛡 {{ skill.form.description(class_="form-control") }}      
+               {{ skill.form.submit(class_="btn btn-primary") }}
+          </div>          
+        </form>  
+      </li>  
+    {% endfor %}
+  </ul>  
+
+  <form action="{{ url_for('.add_skill') }}" method="post" class="mt-3">
+    {{ add_form.hidden_tag() }}
+
+    <div class="input-group mb-3">      
+      <span class="input-group-text">New Skill</span>      
+      {{ add_form.description(class_="form-control") }}      
+      {{ add_form.submit(class_="btn btn-primary") }}
+    </div>
+  </form>    
+{% endblock %}
+
+

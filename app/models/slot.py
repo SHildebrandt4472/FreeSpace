@@ -8,6 +8,18 @@ import datetime
 
 class Slot(db.Model):
 
+  APPROVAL = {
+  'pending'    : 0,
+  'approved'   : 1,
+  'rejected'   : 2,
+  }
+
+  APPROVAL_STRS = {
+    APPROVAL['pending']   : "Pending",
+    APPROVAL['approved']  : "Approved",
+    APPROVAL['rejected']  : "Rejected",
+  }
+
   duration_choices = [5 * x for x in range(3, 25)]  # create list of numbers from 15 mins to 240(3 hours) going up by 5
   hour_choices = [x for x in range(7, 19)] 
   minute_choices = [(x, f"{x:02d}") for x in range(0, 60, 5)] 
@@ -22,7 +34,7 @@ class Slot(db.Model):
   description = db.Column(db.Text)
   repeating = db.Column(db.Integer, default=1)  # 1 = repeat, 0 - not repeat
 
-  approved = db.Column(db.Integer, default=0)  # 1 = approved, 0 - not approved
+  approved = db.Column(db.Integer, default=0)  # 0 = approval pending, 1 = approved, 2 = rejected
   approved_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
@@ -45,10 +57,9 @@ class Slot(db.Model):
     return "Onceoff"
   
   def approved_str(self):
-    if self.approved:
-      return "Approved"
-    return "Pending Approval"
-
+    if self.approved in self.APPROVAL_STRS:
+      return self.APPROVAL_STRS[self.approved]
+    return ""
   
   def is_booked(self):
     if self.user_id:

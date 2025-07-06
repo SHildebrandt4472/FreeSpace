@@ -3,6 +3,10 @@
  * Local Styles that will override bootstrap
  */
 
+body {
+  padding-bottom: 5px;
+} 
+
  #forbidden { 
   padding: 10px 10px;
   border: 2px solid red;  
@@ -12,6 +16,14 @@
   text-align: center;
   color: #fff;
   background: #444;
+}
+
+a {
+  text-decoration: none;
+}
+
+a.link {
+  font-weight: bold;
 }
 
 .slide-alert {  
@@ -56,4 +68,9 @@ th.useraccess-30 {
 th.useraccess-40 {
   background-color: var(--bs-danger);
 }
+
+.one-line {
+    max-height: 25px; 
+    overflow:hidden;
+}  
 

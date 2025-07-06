@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request, abort, ses
 
 from flask_login import current_user, login_required #, login_user, logout_user #, login_required
 #from urllib.parse import urlparse
-from app.models import db, WorkSpace, Slot
+from app.models import db, WorkSpace, Slot, Skill
 from app.main import bp
 import datetime
 #from sqlalchemy import text
@@ -55,15 +55,17 @@ def edit_workspace(id):
    if not current_user.is_admin():
       abort(403)   
    
+   form = WorkspaceEditForm()
    if id:
       workspace = WorkSpace.query.get_or_404(id)
       title = "Edit workspace"
+      form.submit.label.text = "Update"
    
    else:
       workspace = WorkSpace()
-      title = "New workspace"
-
-   form = WorkspaceEditForm()
+      title = "New workspace"  
+      form.submit.label.text = "Create"
+   
    form.name.data = workspace.name
    form.description.data = workspace.description
    form.location.data = workspace.location
@@ -119,3 +121,45 @@ def delete_workspace(id):
    db.session.delete(workspace)
    db.session.commit()
    return redirect(url_for('.workspaces'))
+
+#
+#  Add/Remove Required Skills
+#
+@bp.route('/workspace/<id>/edit_skills')
+@login_required
+def edit_workspace_skills(id):
+  if not current_user.is_manager():
+    abort(403)
+
+  workspace = WorkSpace.query.get_or_404(id)
+  all_skills = Skill.query.all()
+
+  return render_template('workspace_edit_skills.html', title=f'Required Skills for {workspace.name}', workspace=workspace, all_skills=all_skills)
+
+@bp.route('/workspace/<id>/add_skill/<skill_id>', methods=['POST'])
+@login_required
+def add_workspace_skill(id, skill_id):
+  if not current_user.is_manager():
+    abort(403)
+
+  workspace = WorkSpace.query.get_or_404(id)
+  skill = Skill.query.get_or_404(skill_id)
+  if not workspace.requires_skill(skill):
+    workspace.required_skills.append(skill)
+    db.session.commit()
+  
+  return redirect(url_for('.edit_workspace_skills', id = workspace.id))       
+
+@bp.route('/workspace/<id>/remove_skill/<skill_id>', methods=['POST'])
+@login_required
+def remove_workspace_skill(id, skill_id):
+  if not current_user.is_manager():
+    abort(403)
+
+  workspace = WorkSpace.query.get_or_404(id)
+  skill = Skill.query.get_or_404(skill_id)
+  if workspace.requires_skill(skill):
+    workspace.required_skills.remove(skill)
+    db.session.commit()
+  
+  return redirect(url_for('.edit_workspace_skills', id = workspace.id))      

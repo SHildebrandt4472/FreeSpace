@@ -3,6 +3,10 @@
 {% block content %}
   <div class="col-sm-8 border border-1 p-3 rounded bg-secondary mt-4">
     <h1>Booking for {{ current_user.display_name }}</h1>
+
+    {% if slot.is_booked() %}
+      <form id="unbook-form" action="{{ url_for('.unbook', id=slot.id) }}" method="POST"></form>
+    {% endif %}
     <form class="settings" method="post">
         {{ form.hidden_tag() }}
           <p>
@@ -13,20 +17,19 @@
             Duration: {{slot.duration}}
           </p>
 
-          {% with field = form.description %}  
+        {% with field = form.description %}  
           {% include "_form_field_text.html" %}
         {% endwith %} 
 
-        {% with fields = [form.submit,form.cancel] %}  
-            {% include "_form_field_submit.html" %}
-          {% endwith %} 
+        <div class="mt-3 mb-2">
+          {{ form.submit(class_="btn btn-primary") }}
+          {{ form.cancel(class_="btn btn-primary") }}
+      
+          {% if slot.is_booked() %}
+            <input form="unbook-form" class="delete btn btn-danger float-end" type="submit" value="Cancel Booking" onclick="return confirm('Cancel this booking.\nAre You Sure?')">
+          {% endif %}
+        </div>
     </form>
-
-    {% if slot.is_booked() %}
-      <form action="{{ url_for('.unbook', id=slot.id) }}" method="POST">
-        <input class="delete" type="submit" value="Unbook" onclick="return confirm('Cancel this booking.\nAre You Sure?')">
-      </form>
-    {% endif %}
   </div>
 
 

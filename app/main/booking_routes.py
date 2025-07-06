@@ -57,9 +57,26 @@ def approve_booking(id):
    slot = Slot.query.get_or_404(id)  
 
    if slot.is_booked():
-      slot.approved = 1
+      slot.approved = Slot.APPROVAL["approved"]
       slot.approved_by_id = current_user.id
       db.session.commit()
+      flash("Booking approved", "success")
+   
+   return redirect(session['back_to'] or url_for('.home'))
+
+@bp.route('/booking/<id>/reject',methods=['POST'])
+@login_required
+def reject_booking(id):
+   if not current_user.is_manager():
+      abort(403)
+
+   slot = Slot.query.get_or_404(id)  
+
+   if slot.is_booked():
+      slot.approved = Slot.APPROVAL["rejected"]
+      slot.approved_by_id = current_user.id
+      db.session.commit()
+      flash("Booking rejected", "warning")
    
    return redirect(session['back_to'] or url_for('.home'))
 

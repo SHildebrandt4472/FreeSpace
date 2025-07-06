@@ -28,6 +28,11 @@ ACCESS_ICONS = {
   ACCESS['admin']     : "👮",
 }
 
+user_skill_table = db.Table('user_skill',
+  db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True),
+  db.Column('skill_id', db.Integer, db.ForeignKey('skill.id', ondelete='CASCADE'), primary_key=True)
+)
+
 class User(UserMixin, db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(32), index=True, unique=True)
@@ -42,6 +47,8 @@ class User(UserMixin, db.Model):
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
 
   bookings = db.relationship('Slot', backref='user', lazy='dynamic', foreign_keys='Slot.user_id')
+
+  skills = db.relationship('Skill', secondary=user_skill_table, backref='users')
 
   def __repr__(self):
     return f"<User {self.id}: {self.username}>"
@@ -89,6 +96,20 @@ class User(UserMixin, db.Model):
     if (datetime.now() - last_seen).total_seconds() > 600:  # More than 10 minutes ago     
       self.last_seen = datetime.now()
       db.session.commit()
+
+  def has_skill(self, required_skill):
+    for skill in self.skills:       
+      if skill.id == required_skill.id:
+        return True
+    return False
+
+  def has_skills_for(self, workspace):
+    for required_skill in workspace.required_skills:      
+      if not self.has_skill(required_skill):
+        return False
+    return True # User has ALL required skills   
+
+
 
 @login.user_loader
 def load_user(id):

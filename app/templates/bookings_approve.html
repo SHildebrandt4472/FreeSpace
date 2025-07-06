@@ -2,10 +2,10 @@
 
 {% block content %}
 
-  <h2>Bookings to be approved</h2>
+  <h2 class="mt-4">Bookings to be approved</h2>
 
   {% for workspace in workspaces %}
-    <h3 class="bg-dark">
+    <h3 class="bg-secondary p-2 rounded mt-4">
         {% if workspace.thumbnail %}
         <img src="{{ url_for('static', filename='thumbnails/' + workspace.thumbnail) }}" height="60px">
       {% else %}
@@ -14,11 +14,16 @@
       
       {{ workspace.name }}
     </h3>
-    <ul>
+    <ul class="list-group">
       {% for booking in workspace.bookings %}
-        <li>        
-          {{ h.fmt_date(booking.start_time,"%A %d %b") }} |  {{ h.fmt_time(booking.start_time) }} - {{booking.user.display_name}} 
-          {{h.post_to('Approve', '.approve_booking', id=booking.id) |safe}}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span class="font-weight-bold fs-4">{{ h.fmt_date(booking.start_time,"%A %H:%M") }}</span>
+          <span>{{ h.fmt_date(booking.start_time,"%d %b %y") }}</span>
+          <a class="link" href="{{ url_for('.show_user',id=booking.user.id)}}">{{booking.user.display_name}}</a>
+          <span>{{ booking.description[:30] }}</span>
+          <span class="badge bg-secondary rounded-pill">{{booking.duration}} minutes</span>
+          <span>{{h.post_to('Approve', '.approve_booking', id=booking.id) |safe}}
+                {{h.post_to('Reject', '.reject_booking', id=booking.id) |safe}}</span>
 
         </li> 
       {% endfor %}
