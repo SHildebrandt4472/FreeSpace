@@ -133,10 +133,13 @@ def class_for_booking(slot, current_user):
   cls += f" dur_{slot.duration}"
   if slot.user_id == current_user.id:
     cls += " booked"
-  elif slot.user_id:   
-    cls += " not-available"
+  elif slot.is_available():       
+      if current_user.has_skills_for(slot.workspace):
+        cls += " available"
+      else:  
+        cls += " need-skills"
   else:
-    cls += " available"
+    cls += " not-available"
   return cls
 
 
@@ -171,7 +174,7 @@ def button_to(button_text, endpoint, **endpoint_opts):
 def post_to_url(link_text, url, confirm_mesg="", input_class=None):  
   onclick=""
   if confirm_mesg:
-    onclick = f'onclick="return confirm(\'{confirm_mesg}\')"'
+    onclick = f'onclick="return customConfirm(\'{confirm_mesg}\', event)"'
 
   if not input_class:
     input_class = "btn btn-primary"  

@@ -15,8 +15,15 @@ import os
 @login_required
 def workspaces():  # Main home page:
     workspaces = WorkSpace.query.order_by('name').all()
+    usable_workspaces = []
+    other_workspaces = []
+    for workspace in workspaces:
+      if current_user.has_skills_for(workspace):
+         usable_workspaces.append(workspace)
+      else:
+         other_workspaces.append(workspace)
     session['back_to'] = url_for('.workspaces')
-    return render_template('workspaces.html',spaces = workspaces, page='Workspaces')
+    return render_template('workspaces.html',usable_workspaces = usable_workspaces, other_workspaces=other_workspaces, page='Workspaces')
 
 @bp.route('/workspace/<id>', defaults = {'day':None} )
 @bp.route('/workspace/<id>/<date:day>') 
@@ -41,18 +48,18 @@ def show_workspace(id,day):
          dow = slot.start_time.weekday()
          daily_slots[dow]['slots'].append(slot)   
 
-   edit_slots = current_user.is_admin() and request.args.get('edit')
+   edit_slots = current_user.is_manager() and request.args.get('edit')
    edit_slots_url = url_for('.show_workspace',id=id, day=day, edit=1)
-   next_url = url_for('.show_workspace',id=id, day=end_date)
-   prev_url = url_for('.show_workspace',id=id, day=start_date-datetime.timedelta(days=1))
-   session['back_to'] = url_for('.show_workspace', id=id, date=day)
+   next_url = url_for('.show_workspace',id=id, day=end_date, edit=edit_slots)
+   prev_url = url_for('.show_workspace',id=id, day=start_date-datetime.timedelta(days=1), edit=edit_slots)
+   session['back_to'] = url_for('.show_workspace', id=id, day=day, edit=edit_slots)
    return render_template('show_workspace.html',workspace = workspace, daily_slots = daily_slots, prev_url = prev_url, next_url = next_url, edit_slots=edit_slots, edit_slots_url=edit_slots_url, day=day)
 
 @bp.route('/workspace/new', defaults={'id':None})
 @bp.route('/workspace/<id>/edit')
 @login_required
 def edit_workspace(id):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)   
    
    form = WorkspaceEditForm()
@@ -78,17 +85,20 @@ def edit_workspace(id):
 @bp.route('/workspace/<id>/update', methods=['POST'])
 @login_required
 def update_workspace(id):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)
-      
+
+   form = WorkspaceEditForm()      
    if id:
       workspace = WorkSpace.query.get_or_404(id)
       title = "Edit workspace"
+      form.submit.label.text = "Update"
    else:
       workspace = WorkSpace()
       title = "New workspace"
+      form.submit.label.text = "Create"
 
-   form = WorkspaceEditForm()   
+   
    if form.validate_on_submit():      
       workspace.name = form.name.data
       workspace.description = form.description.data
@@ -114,12 +124,13 @@ def update_workspace(id):
 @bp.route('/workspace/<id>/delete', methods=['POST'])
 @login_required
 def delete_workspace(id):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)
 
    workspace = WorkSpace.query.get_or_404(id)
    db.session.delete(workspace)
    db.session.commit()
+   flash("Workspace has been deleted")
    return redirect(url_for('.workspaces'))
 
 #

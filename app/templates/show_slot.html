@@ -10,6 +10,6 @@
   <a href="{{url_for('.edit_slot',slot_id=slot.id)}}">Edit slot</a>
 
   <form action="{ { url_for('.delete_slot', id=slot.id) } }" method="POST">
-    <input class="delete" type="submit" value="Delete" onclick="return confirm('Delete this slot.\nAre You Sure?')">
+    <input class="delete" type="submit" value="Delete" onclick="return customConfirm('Delete this slot?', event)">
   </form>
 {% endblock %}

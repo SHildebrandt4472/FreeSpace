@@ -37,7 +37,7 @@
           {% endif %}
 
           {% if workspace.id %}            
-            <input form="deleteform" class="delete btn btn-danger float-end" type="submit" value="Delete Workspace" onclick="return confirm('Delete Workspace {{workspace.name}}\nAre You Sure?')">            
+            <input form="deleteform" class="delete btn btn-danger float-end" type="submit" value="Delete Workspace" onclick="return customConfirm('Delete Workspace {{workspace.name}}?', event)">            
           {% endif %}
 
         </div>

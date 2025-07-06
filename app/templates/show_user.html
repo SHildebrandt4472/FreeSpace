@@ -19,15 +19,15 @@
       <div class="text-info">Access:</div>
       <div class="ps-2">{{ user.access_str() }}</div>
 
-      <div class="text-info">Last Seen:</div>      
-      <div class="ps-2">{{ h.fmt_datetime(user.last_seen, "%a %d %B %Y,  %H:%M") }}  <span class="text-muted">({{ h.fmt_sincenow(user.last_seen) }})</span></div>
+      <div class="text-info">Last Activity:</div>      
+      <div class="ps-2">{{ h.fmt_datetime(user.last_seen, "%a %d %B %Y,  %H:%M") }}  <span class="text-muted">({{ h.fmt_sincenow(user.last_seen,10) }})</span></div>
     {% endif %}
 
     <div>
       <div class="text-info">Skills</div>
       {% if user.skills %}                        
         {% for skill in user.skills %}
-          <div class="ps-2 one-line">✔ {{ skill.description }} </div>
+          <div class="ps-2 one-line"><img src="{{ url_for('static', filename='icons/tick.png') }}"> {{ skill.description }} </div>
         {% endfor %}
       {% else %}
         <div class="ps-2 text-muted">No Skills</div>                
@@ -37,19 +37,17 @@
   </div>      
 
   <div class="mt-3">
-    <a href="{{url_for('.edit_user',id=user.id)}}" class="btn btn-primary">Edit</a>      
+    {% if current_user.is_admin() or user.id == current_user.id %}
+      <a href="{{url_for('.edit_user',id=user.id)}}" class="btn btn-primary">Edit</a>      
+    {% endif %}
 
     {% if current_user.is_manager() %}
       <a href="{{url_for('.edit_user_skills', user_id=user.id)}}" class="btn btn-primary">Edit Skills</a>     
-    {% endif %}   
-
-    {% if current_user.is_admin() %}
       <a href="{{url_for('.users')}}" class="btn btn-primary">Back to Users</a>   
     {% else %}      
       <a href="{{url_for('.home')}}" class="btn btn-primary">Home</a>   
     {% endif %}   
   </div>
-
   
 {% endblock %}
 

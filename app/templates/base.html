@@ -20,15 +20,18 @@
   <body>
     {% include '_header.html' %}
 
+    {% include '_confirm_popup.html' %}
+
     {% block page_flash %}
         {% include '_flash_messages.html' %}
     {% endblock %}
     
-    <div id="page" class="container">
-      
-      
+    <div id="page" class="container">     
       {% block content %}{% endblock %}
     </div>
+
+    <div id="footerspace"></div>
+
     <footer class="fixed-bottom mt-4">
       <div class="text-center text-muted bg-dark">
         <span>FreeSpace - Developed by Sam Hildebrandt</span>

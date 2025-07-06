@@ -12,7 +12,7 @@ from .user_forms import UserEditForm, ChangePasswordForm
 @bp.route('/users')
 @login_required
 def users():  # Main home page:
-    if not current_user.is_admin():
+    if not current_user.is_manager():
       abort(403)
       
     users = User.query.order_by(User.display_name)
@@ -44,16 +44,17 @@ def edit_user(id):
           user.email_verified = False
         if user != current_user:           # Can't change your own access level
           user.access = form.access.data
-        #reset_password = form.reset_password.data and user != current_user
-        #if reset_password:
-        #  user.password_hash = ''
+        reset_password = form.reset_password.data and user != current_user
+        if reset_password:
+          user.password_hash = ''
 
         if not user.id:               
           db.session.add(user)
-        db.session.commit()
-        flash('Your changes have been saved.')
-        #if reset_password:
-        #  flash(f"Password has been reset for user '{user.username}'")
+        db.session.commit()        
+        if reset_password:
+          flash(f"Password has been reset for user '{user.username}'")
+        else:
+          flash('Your changes have been saved.')  
 
         return redirect(url_for('.show_user', id=user.id))
     elif request.method == 'GET':

@@ -22,10 +22,10 @@ ACCESS_STRS = {
 }
 
 ACCESS_ICONS = {  
-  ACCESS['student']   : "👨‍🎓",
-  ACCESS['staff']     : "👨‍🏫",
-  ACCESS['manager']   : "👷",
-  ACCESS['admin']     : "👮",
+  ACCESS['student']   : "icons/student.png",
+  ACCESS['staff']     : "icons/staff.png",
+  ACCESS['manager']   : "icons/manager.png",
+  ACCESS['admin']     : "icons/admin.png",
 }
 
 user_skill_table = db.Table('user_skill',
@@ -108,8 +108,6 @@ class User(UserMixin, db.Model):
       if not self.has_skill(required_skill):
         return False
     return True # User has ALL required skills   
-
-
 
 @login.user_loader
 def load_user(id):

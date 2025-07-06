@@ -2,20 +2,31 @@
 
 {% block content %}
   <div class="col-sm-8 border border-1 p-3 rounded bg-secondary mt-4">
-    <h1>Booking for {{ current_user.display_name }}</h1>
+    <h3 class="bg-dark p-2 rounded">
+      {% if slot.workspace.thumbnail %}
+        <img src="{{ url_for('static', filename='thumbnails/' + slot.workspace.thumbnail) }}" height="60px" >      
+      {% endif %}
+      
+      {{ slot.workspace.name }}
+    </h3>
+    {% if slot.user_id %}
+      <h1>Booking for {{ slot.user.name() }}</h1>
+    {% else %}
+      <h1>Booking for {{ current_user.name() }}</h1>    
+    {% endif %}
 
     {% if slot.is_booked() %}
       <form id="unbook-form" action="{{ url_for('.unbook', id=slot.id) }}" method="POST"></form>
     {% endif %}
     <form class="settings" method="post">
         {{ form.hidden_tag() }}
-          <p>
-            Start time: {{slot.start_time}}
-          </p>
+          <div class="fs-4">
+            {{ h.fmt_date(slot.start_time, "%A %d %b") }} at {{ h.fmt_time(slot.start_time) }}
+          </div>           
 
-          <p>
-            Duration: {{slot.duration}}
-          </p>
+          <div>
+            Duration: {{slot.duration}} mins
+          </div>
 
         {% with field = form.description %}  
           {% include "_form_field_text.html" %}
@@ -26,7 +37,7 @@
           {{ form.cancel(class_="btn btn-primary") }}
       
           {% if slot.is_booked() %}
-            <input form="unbook-form" class="delete btn btn-danger float-end" type="submit" value="Cancel Booking" onclick="return confirm('Cancel this booking.\nAre You Sure?')">
+            <input form="unbook-form" class="delete btn btn-danger float-end" type="submit" value="Cancel Booking" onclick="return customConfirm('Cancel this booking?', event)">
           {% endif %}
         </div>
     </form>

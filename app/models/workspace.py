@@ -29,15 +29,20 @@ class WorkSpace(db.Model):
 
   created_at = db.Column(db.DateTime, default=db.func.datetime('now')) 
   last_modified = db.Column(db.DateTime, default=db.func.datetime('now'), onupdate=db.func.datetime('now')) 
-  slots = db.relationship('Slot', backref='workspace', lazy='dynamic')
-  bookings = db.relationship('Slot', 
-                             primaryjoin=and_(Slot.workspace_id == id, Slot.start_time > db.func.datetime('now'), Slot.user_id != None), 
-                             lazy='dynamic')
+  slots = db.relationship('Slot', backref='workspace', lazy='dynamic', cascade="all, delete")
+  #bookings = db.relationship('Slot', 
+  #                           primaryjoin=and_(Slot.workspace_id == id, Slot.start_time > db.func.datetime('now'), Slot.user_id != None), 
+  #                           lazy='dynamic')
   
   required_skills = db.relationship('Skill', secondary=workspace_skill_table, backref='workspaces')
 
   def __repr__(self):
     return f"<WorkSpace {self.id}: {self.name}>"
+  
+
+  def unapproved_bookings(self):
+    bookings = self.slots.filter(and_(Slot.start_time > db.func.datetime('now'), Slot.user_id != None, Slot.approved == 0))
+    return bookings  
 
   def status_str(self):
     if self.status in WorkSpace.STS_STRINGS:

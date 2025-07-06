@@ -7,5 +7,5 @@ class Skill(db.Model):
   description = db.Column(db.String(20), unique=True)
 
   def __repr__(self):
-    return f'<Skill: {self.id}>' 
+    return f'<Skill {self.id}: {self.description}>' 
   

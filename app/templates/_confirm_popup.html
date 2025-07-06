@@ -1,0 +1,62 @@
+<div class="modal fade" id="customConfirmModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title" id="confirmModalLabel">Confirm?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="confirmModalMessage">Are you sure?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="confirmOkBtn">OK</button>
+        <button type="button" class="btn btn-secondary" id="confirmCancelBtn" data-bs-dismiss="modal">Cancel</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>  
+   function customConfirm(message, event) {
+    event.preventDefault(); // Stop the form for now
+
+    const button = event.target;
+    const modal = new bootstrap.Modal(document.getElementById('customConfirmModal'));
+    const messageBox = document.getElementById('confirmModalMessage');
+    const okBtn = document.getElementById('confirmOkBtn');
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+
+    messageBox.innerHTML = message; 
+
+    const onOk = () => {
+      cleanup();
+      modal.hide();
+
+      // Create a hidden clone of the button and click it
+      const clone = button.cloneNode(true);
+      clone.style.display = 'none';
+      button.parentNode.insertBefore(clone, button.nextSibling);
+
+      // Temporarily remove the confirmation handler to avoid recursion
+      clone.onclick = null;
+      clone.removeAttribute("onclick");
+
+      clone.click(); // Triggers native behaviour including form submission
+    };
+
+    const onCancel = () => {
+      cleanup();
+      modal.hide();
+    };
+
+    const cleanup = () => {
+      okBtn.removeEventListener('click', onOk);
+      cancelBtn.removeEventListener('click', onCancel);
+    };
+
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onCancel);
+
+    modal.show();
+
+    return false;
+  }
+</script>

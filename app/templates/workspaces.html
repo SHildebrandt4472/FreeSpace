@@ -6,18 +6,29 @@
 
 {% block content %}
 
-  <h2>Work Spaces</h2>  
+  <h2>Usable Workspaces</h2>  
   
   <div>
-    {% if spaces %}
+    {% if usable_workspaces %}
       <ul class="workspaces">
-        {% for workspace in spaces %}
+        {% for workspace in usable_workspaces %}
           {% include '_workspace_panel.html' %}
         {% endfor %}
-      </ul> 
+      </ul>
     {% else %}
-      <p><b>No Workspaces Found</b></p>
+      <div class="text-warning">You do not have sufficient skills yet to use workspaces</div>
     {% endif %}
+
+
+    {% if other_workspaces %}
+      <h2>Other Workspaces</h2>
+      <ul class="workspaces">
+        {% for workspace in other_workspaces %}
+          {% include '_workspace_panel.html' %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+    
   
     </div>
   {% if current_user.is_manager() %}

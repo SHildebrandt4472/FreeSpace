@@ -1,12 +1,11 @@
 from flask import render_template, flash, redirect, url_for, request, abort, session
 
-from flask_login import current_user, login_required #, login_user, logout_user #, login_required
-#from urllib.parse import urlparse
+from flask_login import current_user, login_required 
 from app.models import db, Slot, WorkSpace
 from app.main import bp
 import datetime
 from sqlalchemy import and_
-from  .slot_forms import SlotBookingForm #,SlotEditForm
+from  .slot_forms import SlotBookingForm 
 
 
 @bp.route('/booking/<id>/book',methods=['POST','GET'])
@@ -14,21 +13,32 @@ from  .slot_forms import SlotBookingForm #,SlotEditForm
 def booking(id):
    slot = Slot.query.get_or_404(id)  
 
-   if slot.is_booked() and slot.user_id != current_user.id:
+   if slot.is_booked() and slot.user_id != current_user.id and not current_user.is_manager():
       abort(403) 
 
    form = SlotBookingForm()
+   if not slot.user_id:
+      form.submit.label.text = "Make Booking"  # change button if slot is not currently booked
+
    if request.method == 'GET':
-      form.description.data = slot.description  
+      form.description.data = slot.description        
       return render_template('edit_booking.html', form=form, slot=slot)
+   
    elif request.method == 'POST' and form.validate_on_submit():
-      if form.submit.data:
-         slot.user_id = current_user.id
-         slot.description = form.description.data
-         if current_user.is_staff():
-            slot.approved = 1
-            slot.approved_by_id = current_user.id
-         db.session.commit()      
+      if form.submit.data:         
+         slot.description = form.description.data         
+         if not slot.user_id:
+            slot.user_id = current_user.id
+
+            if current_user.is_staff():
+               slot.approved = Slot.APPROVAL["approved"]
+               slot.approved_by_id = current_user.id
+
+         if slot.approved == Slot.APPROVAL["rejected"]:
+            slot.approved = Slot.APPROVAL["pending"]
+            
+         db.session.commit()            
+         flash('Booking has been saved')
       return redirect(session['back_to'] or url_for('.home'))
    return render_template('edit_booking.html', form=form, slot=slot)
 
@@ -37,7 +47,7 @@ def booking(id):
 def unbook(id):
    slot = Slot.query.get_or_404(id)  
 
-   if slot.is_booked() and slot.user_id != current_user.id:
+   if slot.is_booked() and slot.user_id != current_user.id and not current_user.is_manager():
       abort(403) 
    
    slot.user_id = None
@@ -45,6 +55,7 @@ def unbook(id):
    slot.approved = 0
    slot.approved_by_id = None
    db.session.commit()
+   flash('Booking has been cancelled')
    return redirect(session['back_to'] or url_for('.show_workspace', id=slot.workspace_id, date=slot.start_time.date()))
 
 
@@ -91,8 +102,10 @@ def unapproved_bookings():
    # remove bookings that have already been approved
    spaces = []
    for workspace in workspaces:
-      workspace.bookings = workspace.bookings.filter_by(approved=0)
-      if workspace.bookings.first(): # Only include if has atleast one booking
+      #workspace.bookings = workspace.bookings.filter_by(approved=0)
+      #if workspace.bookings.first(): # Only include if has atleast one booking
+      #   spaces.append(workspace)
+      if workspace.unapproved_bookings().first(): # has atleast one
          spaces.append(workspace)
       
    #today = datetime.date.today()

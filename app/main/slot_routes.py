@@ -6,20 +6,20 @@ from app.models import db, Slot, WorkSpace
 from app.main import bp
 from datetime import date, timedelta
 from sqlalchemy import and_
-from .slot_forms import SlotEditForm, SlotBookingForm
+from .slot_forms import SlotEditForm
 import datetime as dt
 
-@bp.route('/slot/<id>') 
-@login_required
-def show_slot(id):
-   slot = Slot.query.get_or_404(id)
-   return render_template('show_slot.html',slot = slot)
+#@bp.route('/slot/<id>') 
+#@login_required
+#def show_slot(id):
+#   slot = Slot.query.get_or_404(id)
+#   return render_template('show_slot.html',slot = slot)
 
 
 @bp.route('/workspace/<workspace_id>/new_slot/<datetime:start_time>')
 @login_required
 def new_slot(workspace_id, start_time):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)
    
    title = "New Booking Slot"
@@ -30,13 +30,12 @@ def new_slot(workspace_id, start_time):
    slot.duration = 60
 
    form = SlotEditForm()
-   #form.start_time.data = slot.start_time
+   form.submit.label.text = "Create Booking Slot"
    form.day.data = slot.start_time.strftime("%Y-%m-%d")
    form.hour.data = slot.start_time.hour
    form.minute.data = slot.start_time.minute
-   form.duration.data = slot.duration
-   #form.description.data = slot.description
-   form.repeating.data = slot.repeating
+   form.duration.data = slot.duration   
+   form.repeating.data = True
    action = url_for('.add_slot', workspace_id=workspace.id)
    return render_template('edit_slot.html', title=title, action=action, form=form, slot=slot)
 
@@ -44,45 +43,44 @@ def new_slot(workspace_id, start_time):
 @bp.route('/workspace/<workspace_id>/add_slot',methods=['POST'])
 @login_required
 def add_slot(workspace_id):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)
    
    workspace = WorkSpace.query.get_or_404(workspace_id)
-   title = "New booking slot"
+   title = "New Booking Slot"
    slot = Slot()
 
    form = SlotEditForm()
-   if form.validate_on_submit():
-        #slot.start_time = form.start_time.data
+   form.submit.label.text = "Create Booking Slot"
+
+   if form.validate_on_submit():        
         day = dt.datetime.strptime(form.day.data, "%Y-%m-%d")
         slot.start_time = dt.datetime.combine(day, dt.time(form.hour.data, form.minute.data))
-        slot.duration = form.duration.data
-        #slot.description = form.description.data
+        slot.duration = form.duration.data        
         slot.repeating = form.repeating.data
         
         workspace.slots.append(slot)
         db.session.commit()
         flash('Your changes have been saved.')
-        return redirect(url_for('.show_workspace', id=workspace.id))
+        return redirect(session['back_to'] or url_for('.show_workspace', id=workspace.id))
+   
    return render_template('new_slot.html', title=title, form=form)
 
 
 @bp.route('/slot/<id>/edit')
 @login_required
 def edit_slot(id):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)  
 
    title = "Edit Booking Slot"   
    slot = Slot.query.get_or_404(id)   
 
-   form = SlotEditForm()
-   #form.start_time.data = slot.start_time
+   form = SlotEditForm()   
    form.day.data = slot.start_time.strftime("%Y-%m-%d")
    form.hour.data = slot.start_time.hour
    form.minute.data = slot.start_time.minute
-   form.duration.data = slot.duration
-   #form.description.data = slot.description
+   form.duration.data = slot.duration   
    form.repeating.data = slot.repeating
    action = url_for('.update_slot', id=slot.id)
    return render_template('edit_slot.html', title=title, form=form, action=action, slot=slot)
@@ -91,33 +89,44 @@ def edit_slot(id):
 @bp.route('/slot/<id>/update', methods=['POST'])
 @login_required
 def update_slot(id):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)
      
    slot = Slot.query.get_or_404(id)   
    
    form = SlotEditForm()
-   if form.validate_on_submit():
-        #slot.start_time = form.start_time.data
+   if form.validate_on_submit():        
         day = dt.datetime.strptime(form.day.data, "%Y-%m-%d")
         slot.start_time = dt.datetime.combine(day, dt.time(form.hour.data, form.minute.data))
-        slot.duration = form.duration.data
-        #slot.description = form.description.data
+        slot.duration = form.duration.data        
         slot.repeating = form.repeating.data   
         db.session.commit()
         flash('Your changes have been saved.')
-        return redirect(url_for('.show_workspace', id=slot.workspace.id))
+        return redirect(session['back_to'] or url_for('.show_workspace', id=slot.workspace.id))
 
    title = "Edit booking slot" 
    action = url_for('.update_slot', id=slot.id)
    return render_template('edit_slot.html', title=title, form=form, action=action, slot=slot)
+
+@bp.route('/slot/<id>/delete', methods=['POST'])
+@login_required
+def delete_slot(id):
+   if not current_user.is_manager():
+      abort(403)  
+
+   slot = Slot.query.get_or_404(id)      
+   workspace_id = slot.workspace.id
+   db.session.delete(slot)
+   db.session.commit()
+   flash("Booking Slot has been deleted")
+   return redirect(session['back_to'] or url_for('.show_workspace', id=workspace_id))
 
 
 @bp.route('/slots/weekly', defaults={'start_week':-1})
 @bp.route('/slots/weekly/<start_week>')
 @login_required
 def weekly_slots(start_week):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)
 
    start_week = int(start_week)       # means 2 weeks ago
@@ -191,7 +200,7 @@ def weekly_slots(start_week):
 @bp.route('/slots/weekly/copy/<int:from_week>/<int:to_week>',methods=['POST'])
 @login_required
 def copy_weekly_slots(from_week, to_week):
-   if not current_user.is_admin():
+   if not current_user.is_manager():
       abort(403)
 
    today = date.today()

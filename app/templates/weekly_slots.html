@@ -42,7 +42,7 @@
         <td></td>
         {% for col in columns %}
           {% if 'copy_url' in col %}
-            <td colspan="2">{{ h.post_to_url('Copy&#x2b0f;', col['copy_url'], confirm_mesg="Copy all weekly slots to next empty week. Are You Sure") | safe}}</td>                      
+            <td colspan="2">{{ h.post_to_url('Copy&#x2b0f;', col['copy_url'], confirm_mesg="Copy all weekly slots to next empty week?") | safe}}</td>                      
           {% else %}
             <td></td>  
           {% endif %}  

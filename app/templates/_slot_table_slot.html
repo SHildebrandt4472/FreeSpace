@@ -1,8 +1,4 @@
-{% if slot.user_id == current_user.id or slot.is_available() %}
-  <a class="{{ h.class_for_slot(slot) }}" href="{{ url_for('.edit_slot', id=slot.id) }}">
-{% else %}
-  <a class="{{ h.class_for_slot(slot) }}">
-{% endif %}
+<a class="{{ h.class_for_slot(slot) }}" href="{{ url_for('.edit_slot', id=slot.id) }}">
   
 {% if slot.duration > 20 %}
   <span class="status_str">{{ slot.status_str() }}</span>    
@@ -10,7 +6,7 @@
 
 {% if slot.duration > 40 %}
   <br>
-  {{ slot.start_time.strftime("%H:%M")}} {{ slot.duration }} mins
+  {{ slot.start_time.strftime("%H:%M")}} - {{ slot.duration }} mins
 {% endif %} 
 </a>
  

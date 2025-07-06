@@ -1,8 +1,8 @@
 
 from app.models import db
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from sqlalchemy import and_
-import datetime
+#import datetime
 
 
 
@@ -47,9 +47,15 @@ class Slot(db.Model):
   def booking_status_str(self, current_user=None):
     if current_user and self.user_id == current_user.id:
       return "Booked"    
-    if self.user_id:
-      return "Unavailable"
-    return "Available"
+        
+    if self.is_available():
+      if current_user and current_user.has_skills_for(self.workspace):    
+        return "Available"
+      else:
+        return "Skills Required"
+
+    return "Unavailable"
+    
   
   def status_str(self):
     if self.repeating: 
@@ -67,7 +73,18 @@ class Slot(db.Model):
     return False
   
   def is_available(self):
-    return(not self.is_booked())
+    
+    if self.is_booked():  # already booked
+      return False
+    
+    if self.start_time.date() < date.today():
+      return False
+    
+    if self.workspace.status != self.workspace.STS_IN_SERVICE:
+      return False
+    
+    return True
+
   
   # check to see this time slot clashes (overlaps) any existing time slot
   def has_a_clash(self):    
@@ -104,7 +121,7 @@ class Slot(db.Model):
       day = self.start_time.date()  # Same day
 
     new_slot = Slot(workspace_id = workspace_id,
-                    start_time = datetime.datetime.combine(day, self.start_time.time()),
+                    start_time = datetime.combine(day, self.start_time.time()),
                     duration = self.duration,
                     repeating = self.repeating)
     

@@ -36,7 +36,9 @@
           <a href="{{ url_for('.show_user', id=user.id) }}" class="btn btn-primary">Cancel</a>                  
 
           {% if current_user.is_admin() and user.id != current_user.id%}        
-            <input form="deleteform" class="delete btn btn-danger float-end" type="submit" value="Delete User" onclick="return confirm('Delete User {{user.display_name}}\nAre You Sure?')">      
+            {{ form.reset_password(class_="btn btn-warning") }}
+
+            <input form="deleteform" class="delete btn btn-danger float-end" type="submit" value="Delete User" onclick="return customConfirm('Delete User {{user.display_name}}?', event)">      
           {% endif %}
         {% endif %}          
       </div>

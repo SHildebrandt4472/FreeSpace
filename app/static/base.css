@@ -3,9 +3,19 @@
  * Local Styles that will override bootstrap
  */
 
-body {
-  padding-bottom: 5px;
-} 
+#footerspace {
+  height: 50px;
+}
+
+footer {
+  opacity: 0.9;
+}
+
+#flash-message {    
+  position: absolute;
+  width: 100%;  
+  top: 80px;    
+}
 
  #forbidden { 
   padding: 10px 10px;
@@ -54,7 +64,7 @@ input[type="file"]::file-selector-button {
 }
 
 th.useraccess-10 {
-  background-color: var(--bs-primary);
+  background-color: var(--bs-primary);    
 }
 
 th.useraccess-20 {

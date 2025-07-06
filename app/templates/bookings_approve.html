@@ -15,20 +15,45 @@
       {{ workspace.name }}
     </h3>
     <ul class="list-group">
-      {% for booking in workspace.bookings %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          <span class="font-weight-bold fs-4">{{ h.fmt_date(booking.start_time,"%A %H:%M") }}</span>
-          <span>{{ h.fmt_date(booking.start_time,"%d %b %y") }}</span>
-          <a class="link" href="{{ url_for('.show_user',id=booking.user.id)}}">{{booking.user.display_name}}</a>
-          <span>{{ booking.description[:30] }}</span>
-          <span class="badge bg-secondary rounded-pill">{{booking.duration}} minutes</span>
-          <span>{{h.post_to('Approve', '.approve_booking', id=booking.id) |safe}}
-                {{h.post_to('Reject', '.reject_booking', id=booking.id) |safe}}</span>
+      {% for booking in workspace.unapproved_bookings() %}      
+        <li class="list-group-item d-flex justify-content-between align-items-center">       
+          <div class="font-weight-bold fs-5 w-25">
+            {{ h.fmt_date(booking.start_time,"%A %H:%M") }}
+          </div>
+
+          <div class="d-none d-md-inline-block">
+            {{ h.fmt_date(booking.start_time,"%d %b %y") }}
+          </div>
+
+          <a class="link" href="{{ url_for('.show_user',id=booking.user.id)}}">
+            {{booking.user.display_name}}
+          </a>
+
+          <div class="d-none d-lg-inline-block">
+            {{ booking.description[:30] }}
+          </div>         
+
+          <div class="badge bg-secondary rounded-pill d-none d-lg-inline-block">
+            {{booking.duration}} minutes
+          </div>
+          
+          <a class="" href="{{ url_for('.booking', id=booking.id) }}">
+            Show
+          </a>
+
+          <div>
+            {{h.post_to('Approve', '.approve_booking', id=booking.id) |safe}}
+            {{h.post_to('Reject', '.reject_booking', id=booking.id) |safe}}
+          </div>
 
         </li> 
+                  
       {% endfor %}
     </ul>
   {% endfor %}
+  {% if not workspaces %}
+    <div class="text-warning">There are currently no bookings to be approved.</div>
+  {% endif %}
 
 {% endblock %}
 

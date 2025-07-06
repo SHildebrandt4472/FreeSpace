@@ -20,7 +20,7 @@
   <ul class="list-group">
     {% for skill in skills %}      
       <li id="skill-{{skill.id}}" class="list-group-item d-flex justify-content-between align-items-center">        
-        🛡 {{ skill.description }} 
+        <span><img src="{{ url_for('static', filename='icons/badge.png') }}"> {{ skill.description }} </span>
         <span>
           <a class="btn btn-primary" href="#" onclick="toggle_edit({{skill.id}})">Edit</a> 
           {{ h.post_to('X', '.delete_skill', id=skill.id, confirm_mesg="Delete Skill: " + skill.description, input_class="btn btn-danger") |safe}}
@@ -30,9 +30,10 @@
       <li id="skill-edit-{{skill.id}}" class="list-group-item d-flex justify-content-between align-items-center d-none">
         
         <form action="{{ url_for('.update_skill', id=skill.id) }}" method="post" class="w-100">
-          {{ skill.form.hidden_tag() }}
+          {{ skill.form.hidden_tag() }}                    
           <div class="input-group">
-            🛡 {{ skill.form.description(class_="form-control") }}      
+            <img src="{{ url_for('static', filename='icons/badge.png') }}" height="25" class="mt-1">
+             {{ skill.form.description(class_="form-control") }}      
                {{ skill.form.submit(class_="btn btn-primary") }}
           </div>          
         </form>  

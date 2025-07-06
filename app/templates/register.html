@@ -4,16 +4,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='xlogin.css') }}">
 {% endblock %}
 
-{% block page_flash %}{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
   
   <div class="mt-5 p-3 border border-1 rounded bg-secondary" style="max-width: 450px;">
 
-    <h1 class="text-center">New User Registration</h1> 
-    
-    {% include '_flash_messages.html' %}    
+    <h1 class="text-center">New User Registration</h1>       
 
 	  <form action="" method="post">
       {{ form.hidden_tag() }}

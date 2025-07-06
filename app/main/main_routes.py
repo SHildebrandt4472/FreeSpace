@@ -16,10 +16,11 @@ def home():  # Main home page
     
     today = datetime.date.today()
     bookings = current_user.bookings.filter(Slot.start_time >= today)
+    
     #previous_bookings = current_user.bookings.filter(Slot.start_time < today)
-    previous_bookings = current_user.bookings
+    #previous_bookings = current_user.bookings
     previous_workspaces = []
-    for booking in previous_bookings:
+    for booking in current_user.bookings: # all bookings past and present
         if booking.workspace_id not in [ws.id for ws in previous_workspaces]:
             previous_workspaces.append(booking.workspace)
 

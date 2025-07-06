@@ -6,6 +6,11 @@
       <div class="">
         <h2>{{ slot.start_time.strftime("%A %d %b") }}</h2>
       </div>
+
+      {% if slot.workspace %}
+        <form id="delete-form" action="{{ url_for('.delete_slot', id=slot.id) }}" method="POST"></form>
+      {% endif %}  
+
       <form action="{{action}}" method="post">
         {{ form.hidden_tag() }}                 
 
@@ -24,11 +29,15 @@
 
         {% with field = form.repeating %}  
           {% include "_form_field_checkbox.html" %}
-        {% endwith %}         
+        {% endwith %}              
 
-        {% with field = form.submit %}  
-          {% include "_form_field_submit.html" %}
-        {% endwith %} 
+        <div class="mt-3 mb-2">
+          {{ form.submit(class_="btn btn-primary") }}    
+          
+          {% if slot.workspace %}
+            <input form="delete-form" class="btn btn-danger float-end" type="submit" value="Delete" onclick="return customConfirm('Delete this slot?', event)">  
+          {% endif %}  
+        </div>  
     </form>
   </div>
 

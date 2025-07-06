@@ -105,6 +105,12 @@ a.booked:hover {
     border: 1px solid var(--bs-dark);    
 }
 
+.need-skills {  
+    color: var(--bs-secondary-color);
+    background-color: #8c320b;
+    border: 1px solid var(--bs-dark);   
+}
+
 .weekly {    /* Weekly */      
     color: var(--bs-success-color);
     background: var(--bs-primary);

@@ -21,10 +21,10 @@ def login():  # Login page
     if form.validate_on_submit():
       user = User.query.filter_by(username=form.username.data.lower()).first()
       if user is None:  # try searching for email
-        user = User.query.filter_by(email=form.username.data, email_verified=True).first()
+        user = User.query.filter_by(email=form.username.data).first()
 
       if user and not user.password_hash:  # has no password (i.e. has been reset by Admin)
-        if form.username.data and user.username and form.password.data == user.email:  # allow email address as password
+        if form.username.data and user.username and form.password.data == user.email:  # if given username allow email as password 
           login_user(user, remember=form.remember_me.data)      
           return redirect(url_for('.change_password'))
 

@@ -8,7 +8,7 @@
         <ul class="list-group">
             {% for skill in user.skills %}                
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  ✔ {{ skill.description }} {{ h.post_to('Remove', '.remove_user_skill', user_id=user.id, skill_id=skill.id) |safe}}
+                  <span><img src="{{ url_for('static', filename='icons/tick.png') }}"> {{ skill.description }}</span> {{ h.post_to('Remove', '.remove_user_skill', user_id=user.id, skill_id=skill.id) |safe}}
                 </li>
             {% endfor %}            
         </ul>   
@@ -24,7 +24,7 @@
       {% for skill in all_skills %}
         {% if not user.has_skill(skill) %}
           <li class="list-group-item d-flex justify-content-between align-items-center">
-              🛡 {{ skill.description }} {{ h.post_to('Add', '.add_user_skill', user_id=user.id, skill_id=skill.id) |safe}}
+              <span><img src="{{ url_for('static', filename='icons/badge.png') }}"> {{ skill.description }}</span> {{ h.post_to('Add', '.add_user_skill', user_id=user.id, skill_id=skill.id) |safe}}
             </li>   
         {% endif %}  
       {% endfor %}

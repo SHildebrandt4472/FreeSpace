@@ -39,7 +39,8 @@ def add_skill():
             return redirect(url_for('.skills'))
 
         db.session.add(skill)
-        db.session.commit()               
+        db.session.commit()
+        flash("Skill has been added")                
     return redirect(url_for('.skills'))
 
 @bp.route('/skills/update/<id>', methods=['POST'])
@@ -52,16 +53,15 @@ def update_skill(id):
     form = SkillForm()
     if form.validate_on_submit():
         description = form.description.data        
-        print("hello")
 
         exists = Skill.query.filter(and_(Skill.description == description, Skill.id != id)).first()                
-        print("Exists:", exists)
         if exists:
             flash("Skill already Exists", "error")
             return redirect(url_for('.skills'))
 
         skill.description = description
-        db.session.commit()               
+        db.session.commit()
+        flash("Skill has been updated")                
     return redirect(url_for('.skills'))
 
 
@@ -74,5 +74,6 @@ def delete_skill(id):
 
     skill = Skill.query.get_or_404(id)
     db.session.delete(skill)
-    db.session.commit()               
+    db.session.commit() 
+    flash("Skill has been deleted")              
     return redirect(url_for('.skills'))    
