@@ -5,6 +5,20 @@
 
 Freespace is a web-based application designed to help schools manage student access to specialized machinery and equipment in their technology and workshop spaces. It provides a structured system where students can request supervised bookings or apply for licenses to use tools independently. Teachers and platform managers have full control over machine configurations and booking approvals, making it easier to support student projects outside of regular class time.
 
+![Image 1](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_1.png)
+* Booking table with booked and available slots
+
+![Image 6](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_6.png)
+* User roles/management
+
+![Image 2](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_2.png)
+* Dashboard page
+
+![Image 3](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_3.png)
+* Booking approvals
+
+![Image 4](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_4.png)
+* Skills/qualifications management
 
 
 ## Installation
@@ -38,10 +52,10 @@ Freespace is a web-based application designed to help schools manage student acc
    flask db upgrade
 ```
 
-7. Initialize the database with some data
+7. Initialize the database with some demonstration data
 
 ```bash
-   flask cli init_data
+   flask cli init_demo
 ```
 
 8. Start the app
@@ -52,27 +66,23 @@ Freespace is a web-based application designed to help schools manage student acc
 
 9. Open a browser and navigate to http://127.0.0.1:5000
 
-10. Login with the following credentials<br>
+10. Login with the following appropriate credentials credentials<br>
 
-    Use these credential for demo use as a <b>ADMIN</b> user:<br>
-    username: Admin<br>
-    password: Admin_password<br>
-
-    Use these credentials for demo use as a <b>STUDENT</b> user:<br>
-    username: Student<br>
-    password: Student_password<br>
+    Note: Demo data includes multiple users, each users password is the their username. The admin username is Sam with credentials:<br>
+    Username: sam<br>
+    Password: sam<br>
+    Therefore after logging in as Sam, you can view all users and hence log in as other users which use the same credentials scheme with the password matching their username to test out individualised user features
 
     To sign up as new users, click on the "Sign Up" button and use the registration codes:<br>
     For student = IAMASTUDENT<br>
     For staff = TEACHERSRULE<br>
 
-11. You can now use the app
+12. You can now use the app
 
-12. To sign up as a new user, press the logout button
-    and select sign up. Use the registration code <b>SIGNMEUP</b> and fill in your details.
+13. To sign up as a new user, press the logout button
+    and select sign up. Use the appropriate registration codes and fill in your details.
 
-13. To stop the app, press Ctrl+C in the terminal
-
+14. To stop the app, press Ctrl+C in the terminal
 
 ## How to Use
 
