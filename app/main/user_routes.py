@@ -65,9 +65,13 @@ def edit_user(id):
         form.access.data = user.access        
     return render_template('user_edit.html', title=title, form=form, user=user)
 
-@bp.route('/user/<id>') 
+@bp.route('/user/<int:id>') 
 @login_required
 def show_user(id):
+   print("show_user id", id)
+   if not current_user.is_manager() and id != current_user.id:
+      abort(403)
+    
    user = User.query.get_or_404(id)
    return render_template('show_user.html',user = user)
 

@@ -30,7 +30,7 @@
           </a>
 
           <div class="d-none d-lg-inline-block">
-            {{ booking.description[:30] }}
+            {{ h.short_str(booking.description,30) }}
           </div>         
 
           <div class="badge bg-secondary rounded-pill d-none d-lg-inline-block">
