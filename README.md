@@ -1,24 +1,35 @@
 
 ![Logo](https://github.com/SHildebrandt4472/FreeSpace/blob/main/logo.png?raw=true)
 
-# Freespace – Makerspace Management System
+# <img src = "https://github.com/SHildebrandt4472/FreeSpace/blob/main/app/static/icons/logo.svg" height = 25px> Freespace – Makerspace Management System
 
 Freespace is a web-based application designed to help schools manage student access to specialized machinery and equipment in their technology and workshop spaces. It provides a structured system where students can request supervised bookings or apply for licenses to use tools independently. Teachers and platform managers have full control over machine configurations and booking approvals, making it easier to support student projects outside of regular class time.
 
+## Features
+
+- Unlimited workspaces
+- Unlimited users
+- Custom booking times per workspace
+- Multiple user roles, Student, Teacher, Workshop Manager, Administrator
+- Skills qualification management (users must have appropriate skills to make bookings for workspaces)
+- Secure storage of personal details
+
+## Screenshots
+
+* Booking table with booked and available time slots
 ![Image 1](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_1.png)
-* Booking table with booked and available slots
 
-![Image 6](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_6.png)
 * User roles/management
+![Image 6](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_6.png)
 
-![Image 2](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_2.png)
 * Dashboard page
+![Image 2](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_2.png)
 
-![Image 3](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_3.png)
 * Booking approvals
+![Image 3](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_3.png)
 
-![Image 4](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_4.png)
 * Skills/qualifications management
+![Image 4](https://github.com/SHildebrandt4472/FreeSpace/blob/main/Screenshots/readme_4.png)
 
 
 ## Installation
@@ -84,21 +95,19 @@ Freespace is a web-based application designed to help schools manage student acc
 
 14. To stop the app, press Ctrl+C in the terminal
 
-## How to Use
+## User Guide
 
-Freespace is designed with three main user roles: Students, Teachers, and Platform Managers (Admins). Each role has access to features tailored to their responsibilities and permissions within the system.
+Freespace is designed with four main user roles: Students, Teachers, and Workspace Managers and system Admins. Each role has access to features tailored to their responsibilities and permissions within the system.
 
 ### Students:
 
 - View all available workspaces and machines listed on the platform.
 
-- Request booking slots for specific machines or workspaces
+- Request booking slots for specific machines or workspaces.
 
-- Apply for skills/licenses related to specific machines. Once a student earns a skill, they can:
+- Review/modify future bookings.
 
-    - Book that machine independently, without requiring teacher approval.
-
-    - Demonstrate their competence and safety awareness through practical or theoretical assessments.
+- View/modify profile and change password.
 
 This empowers students to take greater ownership of their learning while ensuring safety and proper use of tools.
 
@@ -106,29 +115,25 @@ This empowers students to take greater ownership of their learning while ensurin
 
 - Like students, they can view, book, and access all machines and workspaces.
 
-- However, teachers are automatically equipped with all skills/licenses, meaning:
+- They do not need to apply for approval after booking any equipment.
 
-    - They do not need to apply for approval before booking any equipment.
 
-    - They can directly reserve slots without supervision requirements.
+### Workshop Managers:
 
-- Teachers can also approve or deny student license requests and supervise sessions when needed.
-
-### Workshop Managers, administrators can:
-
-Admins are responsible for the overall management of the system and have access to full administrative functionality. They can:
+Workspace managers are responsible for the overall management of the workspaces and skills/qualifications system. They can:
 
 - Create, configure, and manage all workspaces and machines on the platform.
 
     - Add and schedule available time slots for each workspace to determine when machines can be booked.
 
-    - Manage users, including assigning roles and monitoring license progress.
-
     - Approve or reject student booking requests that require administrative approval.
 
-    - Create and assign skills/licenses, ensuring that access to machines aligns with safety and training protocols.
+    - Create and assign skills/qualifications, ensuring that access to machines aligns with safety and training protocols.
 
-Admins ensure that the makerspace remains well-organized, safe, and available to the school community in a structured way.
+
+### Admin
+
+Admins ensure that the makerspace remains well-organized, safe, and available to the school community in a structured way. Admins have full privileges aswell as control over user management.
 
 
 ## License Information
@@ -138,13 +143,12 @@ This project is licensed under the [Mozilla Public License 2.0](https://github.c
 
 ## Acknowledgements
 
-- Inspired by makerspace models at UNSW and UTS
-- Appreciation to educators who provided early feedback
+- Inspired by makerspace booking platform models at UNSW and UTS
 - St Augustine's College for supporting this project, providing test data and resources to develop and test the application
 
 ## Author Details
 
-This project was made and is maintained by Sam Hildebrandt as Software major work project of the Software Engineering course at St Augustines College.<br>
+This project was made and is maintained by Sam Hildebrandt as a Software major work project of the Software Engineering course at St Augustines College.<br>
 **Created by:** Sam Hildebrandt  
 **Email:** shildebrandt@student.saintaug.nsw.edu.au.com  
 
