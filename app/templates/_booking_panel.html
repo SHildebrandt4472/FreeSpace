@@ -6,7 +6,7 @@
       {% else %}
         <img src="{{ url_for('static', filename='icons/unknown.png') }} " height="50px">
       {% endif %}
-      <div class="name">AAA{{ h.short_str(booking.workspace.name,15) }}</div>
+      <div class="name">{{ h.short_str(booking.workspace.name,15) }}</div>
       
     </div>
     <div class="info-col">
