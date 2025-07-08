@@ -156,4 +156,4 @@ This project was made and is maintained by Sam Hildebrandt as a Software major w
 ## Documentation
 
 Detailed documentation including program logic diagrams, detailed logs of development and information all about the application can be found in the documentation file:  
-[FreeSpace Documentation](https://github.com/SHildebrandt4472/Task-Master/blob/main/freespace_documentation.pdf)
+[FreeSpace Documentation](https://github.com/SHildebrandt4472/FreeSpace/blob/main/freespace_documentation.pdf)
